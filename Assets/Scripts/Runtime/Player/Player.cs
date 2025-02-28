@@ -1,5 +1,4 @@
-using EEA.BaseServices;
-using EEA.InputServices;
+using EEA.GameService;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +23,9 @@ namespace EEA.Game
                 Vector3 offset = positions[0] - positions[1];
                 offset.z = offset.y;
                 offset.y = 0;
+
+                // clamp offst to joystick radius
+                offset = Vector3.ClampMagnitude(offset, joystickRadius);
 
                 Vector3 percentedOffset = offset / joystickRadius;
 

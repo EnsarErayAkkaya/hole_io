@@ -1,10 +1,9 @@
-using EEA.BaseServices;
 using Lean.Touch;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.InputServices
+namespace EEA.GameService
 {
     public class InputService : BaseService, IInputService
     {

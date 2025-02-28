@@ -1,5 +1,4 @@
-﻿using EEA.BaseServices;
-using EEA.InputServices;
+﻿using EEA.GameService;
 using System.Collections.Generic;
 using UnityEngine;
 

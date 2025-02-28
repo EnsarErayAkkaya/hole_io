@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.BaseServices.Interfaces
+namespace EEA.GameService
 {
     internal interface ITickable
     {

@@ -1,10 +1,8 @@
-using EEA.BaseServices.Interfaces;
-using EEA.InputServices;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.BaseServices
+namespace EEA.GameService
 {
     public class GameServices : MonoBehaviour
     {

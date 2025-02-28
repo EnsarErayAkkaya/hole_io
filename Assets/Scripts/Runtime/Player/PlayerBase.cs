@@ -12,8 +12,11 @@ namespace EEA.Game
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class PlayerBase : MonoBehaviour
     {
+        #region PRIVATE
         private NavMeshAgent agent;
-
+        private string guid;
+        private int level;
+        #endregion PRIVATE
         #region PUBLIC
         public abstract int Level { get; }
         #endregion PUBLIC
@@ -28,6 +31,12 @@ namespace EEA.Game
             agent = GetComponent<NavMeshAgent>();
         }
 
+        public virtual void Init(string guid, int level)
+        {
+            this.guid = guid;
+            this.level = level;
+        }
+
         /// <summary>
         /// Moves using AI Agent on Navmesh using offset. "offset" must be on XZ.
         /// </summary>
@@ -35,6 +44,18 @@ namespace EEA.Game
         public void Move(Vector3 offset)
         {
             agent.Move(offset * agent.speed * Time.deltaTime);
+        }
+
+        protected void Scale(bool isInstant = false)
+        {
+            if (isInstant)
+            {
+                transform.localScale = Vector3.one * level;
+            }
+            else
+            {
+
+            }
         }
     }
 }

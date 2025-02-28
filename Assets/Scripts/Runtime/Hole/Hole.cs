@@ -16,6 +16,15 @@ namespace EEA.Game
             }
         }
 
+
+        private void OnTriggerStay(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out Entity entity))
+            {
+                entity.WakeUpRigidbody();
+            }
+        }
+
         private void OnTriggerExit(Collider other)
         {
             if (other.gameObject.TryGetComponent(out Entity entity))
