@@ -1,20 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using EEA.Game;
 using UnityEngine;
+
 namespace EEA.GameService
 {
-    public class IPlayerCreatorService : MonoBehaviour
+    public interface IPlayerCreatorService
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public PlayerCreatorServiceSettings Settings { get; }
+        public PlayerBase CreateUserPlayer(Vector3 position);
 
-        }
+        public PlayerBase CreateAIPlayer(Vector3 position);
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

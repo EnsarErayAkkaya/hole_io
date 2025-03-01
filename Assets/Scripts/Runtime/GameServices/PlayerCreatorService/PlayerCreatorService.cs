@@ -4,11 +4,14 @@ using UnityEngine;
 
 namespace EEA.GameService
 {
-    public class PlayerCreatorService : MonoBehaviour
+    public class PlayerCreatorService : BaseService, IPlayerCreatorService
     {
-        private List<PlayerData> players;
+        #region PRIVATE
+        private PlayerCreatorServiceSettings _settings;
+        private Dictionary<string, PlayerBase> _playersDict;
 
-        private List<Color> allColors = new List<Color>()
+        private List<Color> _notUsedColors;
+        private List<Color> _allColors = new List<Color>()
         {
             Color.red,
             Color.blue,
@@ -18,45 +21,53 @@ namespace EEA.GameService
             Color.magenta,
             Color.black,
         };
+        #endregion PRIVATE
 
-        private List<Color> notUsedColors;
+        #region PUBLIC
+        public Dictionary<string, PlayerBase> PlayersDict => _playersDict;
+        public PlayerCreatorServiceSettings Settings => _settings;
+        #endregion PUBLIC
 
-        public PlayerCreatorService()
+        public PlayerCreatorService(PlayerCreatorServiceSettings settings)
         {
-            players = new();
-            notUsedColors = new List<Color>(allColors);
+            this._settings = settings;
+            _playersDict = new();
+            _notUsedColors = new List<Color>(_allColors);
         }
 
-        public void CreateUserPlayer()
+        public PlayerBase CreateUserPlayer(Vector3 position)
         {
-            
+            var player = GameServices.PoolService.Spawn(_settings.playerPrefab);
+
+            player.SetPosition(position);
+            return CreatePlayer(player);
         }
 
-        public void CreateAIPlayer()
+        public PlayerBase CreateAIPlayer(Vector3 position)
         {
-            
+            var aiPlayer = GameServices.PoolService.Spawn(_settings.aiPlayerPrefab);
+
+            return CreatePlayer(aiPlayer);
         }
 
-        private void CreatePlayer()
+        private PlayerBase CreatePlayer(PlayerBase playerBase)
         {
-            int colorIndex = Random.Range(0, notUsedColors.Count);
+            string playerId = System.Guid.NewGuid().ToString();
+            playerBase.PlayerId = playerId;
 
-            notUsedColors.RemoveAt(colorIndex);
+            int colorIndex = UnityEngine.Random.Range(0, _notUsedColors.Count);
+            playerBase.SetColor(_notUsedColors[colorIndex]);
+
+            _playersDict.Add(playerId, playerBase);
+
+
+            // reset all colors after colors used
+            _notUsedColors.RemoveAt(colorIndex);
+            if (_notUsedColors.Count <= 0)
+                _notUsedColors.AddRange(_allColors);
+
+            return playerBase;
         }
-    }
 
-    public class PlayerData
-    {
-        public string Guid { get; private set; }
-        public Color Color { get; private set; }
-        public int Level { get; private set; }
-        public PlayerBase PlayerBase { get; }
-
-        public PlayerData(PlayerBase player, int level, Color color)
-        {
-            PlayerBase = player;
-            Level = level;
-            Color = color;
-        }
     }
 }

@@ -6,15 +6,30 @@ namespace EEA.GameService
 {
     public class GameServices : MonoBehaviour
     {
-        public Action OnServicesReady { get; set; }
+        [SerializeField] private GameServiceSettings settings;
 
+        #region PRIVATE
         private List<ITickable> tickables = new();
+        #endregion PRIVATE
+
+        #region PUBLIC
+        public GameServiceSettings Settings => settings;
+        #endregion PUBLIC
 
         #region SERVICES
         private InputService inputService;
+        private PlayerCreatorService playerCreatorService;
+        private PoolService poolService;
 
         public static IInputService InputService => instance.inputService;
+        public static IPlayerCreatorService PlayerCreatorService => instance.playerCreatorService;
+        public static IPoolService PoolService => instance.poolService;
         #endregion SERVICES
+
+        #region EVENTS
+        public delegate void OnServicesReadyHandler();
+        public event OnServicesReadyHandler OnServicesReady;
+        #endregion EVENTS
 
         #region SINGLETON
         private static GameServices instance;
@@ -32,6 +47,8 @@ namespace EEA.GameService
 
             // Bind Services and interfaces
             inputService = BindServiceInterfaces<InputService>(new InputService());
+            playerCreatorService = BindServiceInterfaces<PlayerCreatorService>(new PlayerCreatorService(settings.PlayerCreatorServiceSettings));
+            poolService = BindServiceInterfaces<PoolService>(new PoolService(settings.PoolServiceSettings));
 
             OnServicesReady?.Invoke();
         }

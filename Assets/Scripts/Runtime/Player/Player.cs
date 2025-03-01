@@ -1,4 +1,5 @@
 using EEA.GameService;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,8 @@ namespace EEA.Game
 {
     public class Player : PlayerBase
     {
-        [SerializeField] private float joystickRadius;
-        public override int Level => throw new System.NotImplementedException();
+        [SerializeField]
+        public Player.EditorReferences playerReferences;
 
         protected override void InternalInit()
         {
@@ -25,14 +26,22 @@ namespace EEA.Game
                 offset.y = 0;
 
                 // clamp offst to joystick radius
-                offset = Vector3.ClampMagnitude(offset, joystickRadius);
+                offset = Vector3.ClampMagnitude(offset, playerReferences.joystickRadius);
 
-                Vector3 percentedOffset = offset / joystickRadius;
+                Vector3 percentedOffset = offset / playerReferences.joystickRadius;
 
                 //Debug.Log($"Offset: {offset}, percentedOffset: {percentedOffset}");
 
-                this.Move(percentedOffset);
+                SetRotation(Quaternion.Euler(0f, Mathf.Atan2(percentedOffset.x, percentedOffset.z) * Mathf.Rad2Deg, 0f));
+
+                Move(percentedOffset);
             }
+        }
+
+        [Serializable]
+        public class EditorReferences
+        {
+            public float joystickRadius;
         }
     }
 }
