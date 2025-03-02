@@ -16,7 +16,7 @@ namespace EEA.Game
     {
         #region SERIALIZED
         [SerializeField]
-        public EditorReferences references;
+        public PlayerBaseEditorReferences references;
         #endregion SERIALIZED
 
         #region PRIVATE
@@ -61,12 +61,7 @@ namespace EEA.Game
         public bool IsDead => _isDead;
         #endregion PUBLIC
 
-        private void Start()
-        {
-            InternalInit();
-        }
-
-        protected virtual void InternalInit()
+        protected virtual void Start()
         {
             _cachedTransform = transform;
             _agent = GetComponent<NavMeshAgent>();
@@ -142,7 +137,7 @@ namespace EEA.Game
 
 
         [Serializable]
-        public class EditorReferences
+        public class PlayerBaseEditorReferences
         {
             public HoleTrigger fallingEntityTrigger;
             public Image xpBarImage;

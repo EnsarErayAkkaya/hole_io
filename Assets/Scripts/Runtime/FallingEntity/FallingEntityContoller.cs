@@ -1,3 +1,5 @@
+using EEA.GameService;
+using System;
 using UnityEngine;
 
 namespace EEA.Game
@@ -8,10 +10,12 @@ namespace EEA.Game
     [RequireComponent(typeof(FallingEntity))]
     public class FallingEntityController : MonoBehaviour
     {
+        [SerializeField]
+        public EditorReferences references;
+
         #region PRIVATE
         private string _playerId;
         private bool _isDestroyed;
-        private Rigidbody _rigidbody;
         private FallingEntity _fallingEntity;
         #endregion PRIVATE
 
@@ -19,36 +23,37 @@ namespace EEA.Game
         public FallingEntity FallingEntity => _fallingEntity;
         #endregion PUBLIC
 
-        private void Start()
+        private void Awake()
         {
             _fallingEntity = GetComponent<FallingEntity>();
-            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void OnEnable()
         {
             _playerId = "";
             _isDestroyed = false;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
         }
 
-        /// <summary>
-        /// Wakes up connected rigidbody to include in physic calculations
-        /// </summary>
-        public void WakeUpRigidbody()
+        private void OnTriggerEnter(Collider other)
         {
-            if (_rigidbody.IsSleeping())
-                _rigidbody.WakeUp();
+            if (!other.CompareTag(references.holeBottomTag))
+                return;
+            this._playerId = other.GetComponentInParent<PlayerBase>().PlayerId;
         }
 
-        /// <summary>
-        /// Sleeps rigidbody to not include in physic calculations 
-        /// </summary>
-        public void SleepRigidbody()
+        private void OnTriggerExit(Collider other)
         {
-            if (!_rigidbody.IsSleeping())
-                _rigidbody.Sleep();
+            if (!other.CompareTag(references.holeDestroyTag))
+                return;
+
+            GameServices.FallingEntityService.UnregisterFallingEntity(this);
+        }
+
+        [Serializable]
+        public class EditorReferences
+        {
+            [Tag] public string holeBottomTag;
+            [Tag] public string holeDestroyTag;
         }
     }
 }

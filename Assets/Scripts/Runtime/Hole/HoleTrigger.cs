@@ -16,14 +16,19 @@ namespace EEA.Game
             if (other.gameObject.TryGetComponent(out FallingEntityController entity))
             {
                 entity.FallingEntity.ChangeLayer(references.fallingEntityLayer);
-                entity.WakeUpRigidbody();
+                entity.FallingEntity.WakeUpRigidbody();
             }
         }
         private void OnTriggerStay(Collider other)
         {
             if (other.gameObject.TryGetComponent(out FallingEntityController entity))
             {
-                entity.WakeUpRigidbody();
+                entity.FallingEntity.ChangeLayer(references.fallingEntityLayer);
+                entity.FallingEntity.WakeUpRigidbody();
+            }
+            else if (other.gameObject.CompareTag(references.HoleTag))
+            {
+                
             }
         }
 
@@ -32,7 +37,7 @@ namespace EEA.Game
             if (other.gameObject.TryGetComponent(out FallingEntityController entity))
             {
                 entity.FallingEntity.ChangeLayer(references.entityLayer);
-                entity.WakeUpRigidbody();
+                entity.FallingEntity.WakeUpRigidbody();
             }
         }
 
@@ -41,6 +46,7 @@ namespace EEA.Game
         {
             [Layer] public int entityLayer;
             [Layer] public int fallingEntityLayer;
+            [Tag] public string HoleTag;
         }
     }
 }

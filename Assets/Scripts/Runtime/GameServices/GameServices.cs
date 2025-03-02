@@ -20,10 +20,12 @@ namespace EEA.GameService
         private InputService inputService;
         private PlayerCreatorService playerCreatorService;
         private PoolService poolService;
+        private FallingEntityService fallingEntityService;
 
         public static IInputService InputService => instance.inputService;
         public static IPlayerCreatorService PlayerCreatorService => instance.playerCreatorService;
         public static IPoolService PoolService => instance.poolService;
+        public static IFallingEntityService FallingEntityService => instance.fallingEntityService;
         #endregion SERVICES
 
         #region EVENTS
@@ -49,6 +51,7 @@ namespace EEA.GameService
             inputService = BindServiceInterfaces<InputService>(new InputService());
             playerCreatorService = BindServiceInterfaces<PlayerCreatorService>(new PlayerCreatorService(settings.PlayerCreatorServiceSettings));
             poolService = BindServiceInterfaces<PoolService>(new PoolService(settings.PoolServiceSettings));
+            fallingEntityService = BindServiceInterfaces<FallingEntityService>(new FallingEntityService());
 
             OnServicesReady?.Invoke();
         }

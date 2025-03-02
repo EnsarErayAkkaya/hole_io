@@ -8,11 +8,11 @@ namespace EEA.Game
     public class Player : PlayerBase
     {
         [SerializeField]
-        public Player.EditorReferences playerReferences;
+        public PlayerEditorReferences playerReferences;
 
-        protected override void InternalInit()
+        protected override void Start()
         {
-            base.InternalInit();
+            base.Start();
             GameServices.InputService.OnInputReceived += OnInputReceived;
         }
 
@@ -39,7 +39,7 @@ namespace EEA.Game
         }
 
         [Serializable]
-        public class EditorReferences
+        public class PlayerEditorReferences
         {
             public float joystickRadius;
         }
