@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de97f74a1e32a4b499ef849287ed68a2, type: 3}
+  m_Name: SceneServiceSettings
+  m_EditorClassIdentifier: 
+  loadTestScene: 1
+  testSceneConfig: {fileID: 11400000, guid: 26b815b91fbfae346b427f2932663733, type: 2}
+  resolveBaseSceneConfig: {fileID: 11400000, guid: c21af9465732eb440b719757b8e89fea,
+    type: 2}
+  splashSceneConfig: {fileID: 0}
+  menuSceneConfig: {fileID: 11400000, guid: a5f3fa99502ae1541889a169ef069cb0, type: 2}
+  gameSceneConfig: {fileID: 11400000, guid: 2c570e262465abc48adf5d6b8fa6b7a0, type: 2}
+  sceneConfigs:
+  - {fileID: 11400000, guid: c21af9465732eb440b719757b8e89fea, type: 2}
+  - {fileID: 11400000, guid: a5f3fa99502ae1541889a169ef069cb0, type: 2}
+  - {fileID: 11400000, guid: 2c570e262465abc48adf5d6b8fa6b7a0, type: 2}
+  delayBeforeFirstSceneLoad: 1.11

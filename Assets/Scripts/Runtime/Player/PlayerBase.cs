@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using TMPro;
 
 namespace EEA.Game
 {
@@ -21,6 +22,7 @@ namespace EEA.Game
 
         #region PRIVATE
         private string _id;
+        private string _playerName;
         private int _points;
         private int _xp;
         private int _level = 1;
@@ -38,6 +40,17 @@ namespace EEA.Game
         #endregion EVENTS
 
         #region PUBLIC
+
+        public string PlayerName
+        {
+            get => _playerName;
+            set
+            {
+                _playerName = value;
+                references.nameText.text = _playerName;
+            }
+        }
+
         public string PlayerId
         {
             get => _id;
@@ -52,19 +65,22 @@ namespace EEA.Game
 
         public int Xp => _xp;
 
-        public int Level =>     _level;
+        public int Level => _level;
 
         public float Speed => _speed;
 
         public float Size => _size;
 
         public bool IsDead => _isDead;
+        public Color Color => _color;
         #endregion PUBLIC
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             _cachedTransform = transform;
             _agent = GetComponent<NavMeshAgent>();
+            references.xpSlider.value = 0.0f;
+            references.sliderText.text = $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}";
         }
 
         /// <summary>
@@ -85,16 +101,22 @@ namespace EEA.Game
 
             if (requiredXp == -1)
             {
-                references.xpBarImage.fillAmount = 1f;
+                references.xpSlider.value = 1f;
+                references.sliderText.gameObject.SetActive(false);
+
             }
             else if (_xp >= requiredXp && requiredXpNextLevel != -1)
             {
                 SetLevel(_level + 1);
                 _xp -= requiredXp;
-                references.xpBarImage.fillAmount = Mathf.Clamp01((float)_xp / (float)requiredXpNextLevel);
+                references.xpSlider.value = Mathf.Clamp01((float)_xp / (float)requiredXpNextLevel);
+                references.sliderText.text = $"{_xp}/{requiredXpNextLevel}";
             }
             else
-                references.xpBarImage.fillAmount = Mathf.Clamp01((float)_xp / (float)requiredXp);
+            {
+                references.xpSlider.value = Mathf.Clamp01((float)_xp / (float)requiredXp);
+                references.sliderText.text = $"{_xp}/{requiredXp}";
+            }
         }
 
         public void AddPoints(int pts) => _points += pts;
@@ -109,7 +131,9 @@ namespace EEA.Game
 
             references.fallingEntityTrigger.SetMinimumSize(_level);
 
-            OnLevelChanged.Invoke(_level);
+            references.levelText.text = $"LVL {_level}";
+
+            OnLevelChanged?.Invoke(_level);
         }
 
         public void SetSpeed(float speed) => _speed = speed;
@@ -134,18 +158,24 @@ namespace EEA.Game
         }
 
         public void SetPosition(Vector3 position) => _cachedTransform.position = position;
+        public Vector3 GetPosition() => _cachedTransform.position;
 
 
         [Serializable]
         public class PlayerBaseEditorReferences
         {
             public HoleTrigger fallingEntityTrigger;
-            public Image xpBarImage;
 
             public Transform directionTransform;
             public SpriteRenderer directionSprite;
 
             public SpriteRenderer skin;
+
+            [Header("Player Info")]
+            public Slider xpSlider;
+            public TextMeshProUGUI sliderText;
+            public TextMeshProUGUI nameText;
+            public TextMeshProUGUI levelText;
         }
     }
 }

@@ -64,7 +64,7 @@ namespace EEA.Game
             handle.pivot = center;
             handle.anchoredPosition = Vector2.zero;
 
-            GameServices.InputService.OnInputReceived += OnInputReceived;
+            BaseServices.InputService.OnInputReceived += OnInputReceived;
         }
 
         private void OnInputReceived(InputType type, List<Vector3> positions)

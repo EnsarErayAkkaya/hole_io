@@ -13,18 +13,18 @@ namespace EEA.Game
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.TryGetComponent(out FallingEntityController entity))
+            if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.FallingEntity.ChangeLayer(references.fallingEntityLayer);
-                entity.FallingEntity.WakeUpRigidbody();
+                entity.ChangeLayer(references.fallingEntityLayer);
+                entity.WakeUpRigidbody();
             }
         }
         private void OnTriggerStay(Collider other)
         {
-            if (other.gameObject.TryGetComponent(out FallingEntityController entity))
+            if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.FallingEntity.ChangeLayer(references.fallingEntityLayer);
-                entity.FallingEntity.WakeUpRigidbody();
+                entity.ChangeLayer(references.fallingEntityLayer);
+                entity.WakeUpRigidbody();
             }
             else if (other.gameObject.CompareTag(references.HoleTag))
             {
@@ -34,10 +34,10 @@ namespace EEA.Game
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.TryGetComponent(out FallingEntityController entity))
+            if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.FallingEntity.ChangeLayer(references.entityLayer);
-                entity.FallingEntity.WakeUpRigidbody();
+                entity.ChangeLayer(references.entityLayer);
+                entity.WakeUpRigidbody();
             }
         }
 

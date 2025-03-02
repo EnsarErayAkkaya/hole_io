@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a184ec55946ae6468ee60eedc30e6f2, type: 3}
+  m_Name: PlayerServiceSettings
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 2411602467291073661, guid: d0e54f5c3592c3b48b83d29259cc9b83,
+    type: 3}
+  aiPlayerPrefab: {fileID: 0}
+  _requiredExpsToLevelUp: 000000000a00000011000000180000001f000000260000002d000000340000003b000000420000004900000050000000570000005e000000650000006c000000730000007a0000008100000088000000
+  _pointsForEntityLevel: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e000000100000001200000014000000170000001c0000001e000000
