@@ -1,4 +1,4 @@
-using EEA.GameService;
+using EEA.BaseService;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +42,7 @@ namespace EEA.Game
         public class PlayerEditorReferences
         {
             public float joystickRadius;
+            public Canvas worldCanvas;
         }
     }
 }

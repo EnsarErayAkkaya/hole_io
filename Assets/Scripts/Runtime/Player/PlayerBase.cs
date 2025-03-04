@@ -1,5 +1,5 @@
 using DG.Tweening;
-using EEA.GameService;
+using EEA.BaseService;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,10 +15,8 @@ namespace EEA.Game
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class PlayerBase : MonoBehaviour
     {
-        #region SERIALIZED
         [SerializeField]
         public PlayerBaseEditorReferences references;
-        #endregion SERIALIZED
 
         #region PRIVATE
         private string _id;
@@ -33,11 +31,6 @@ namespace EEA.Game
         private Transform _cachedTransform;
         private NavMeshAgent _agent;
         #endregion PRIVATE
-
-        #region EVENTS
-        public delegate void OnLevelChangedEventHandler(int level);
-        public event OnLevelChangedEventHandler OnLevelChanged;
-        #endregion EVENTS
 
         #region PUBLIC
 
@@ -81,6 +74,8 @@ namespace EEA.Game
             _agent = GetComponent<NavMeshAgent>();
             references.xpSlider.value = 0.0f;
             references.sliderText.text = $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}";
+
+            SetLevel(1);
         }
 
         /// <summary>
@@ -111,6 +106,8 @@ namespace EEA.Game
                 _xp -= requiredXp;
                 references.xpSlider.value = Mathf.Clamp01((float)_xp / (float)requiredXpNextLevel);
                 references.sliderText.text = $"{_xp}/{requiredXpNextLevel}";
+
+                BaseGameManager.PlayerService.PlayerLeveledUp(this);
             }
             else
             {
@@ -124,16 +121,19 @@ namespace EEA.Game
         public void SetLevel(int level)
         {
             _level = Mathf.Clamp(level, 0, 20);
-            float levelProgressPercent = (float)(_level - 1) / 19f;
+            float levelProgressPercent = (float)(_level - 1) / 19f; // 0.0 - 1.0f
 
-            SetSpeed(Mathf.Lerp(0.65f, 2.5f, levelProgressPercent));
+            SetSpeed(Mathf.Lerp(4f, 25f, levelProgressPercent));
             SetSize(Mathf.Lerp(2f, 40f, levelProgressPercent));
+
+            foreach (var listener in references.holeResizeListeners)
+            {
+                listener.OnHoleSizeChanged(levelProgressPercent);
+            }
 
             references.fallingEntityTrigger.SetMinimumSize(_level);
 
             references.levelText.text = $"LVL {_level}";
-
-            OnLevelChanged?.Invoke(_level);
         }
 
         public void SetSpeed(float speed) => _speed = speed;
@@ -141,7 +141,7 @@ namespace EEA.Game
         public void SetSize(float size)
         {
             _size = size;
-            _cachedTransform.localScale = new Vector3(size, 1f, size);
+            _cachedTransform.localScale = new Vector3(size, 1, size);
         }
 
         public void SetColor(Color c)
@@ -149,7 +149,7 @@ namespace EEA.Game
             _color = c;
 
             references.directionSprite.color = _color;
-            references.skin.color = _color;
+            references.skin.material.color = _color;
         }
 
         public void SetRotation(Quaternion rotation)
@@ -164,12 +164,13 @@ namespace EEA.Game
         [Serializable]
         public class PlayerBaseEditorReferences
         {
+            public HoleResizeListener[] holeResizeListeners;
             public HoleTrigger fallingEntityTrigger;
 
             public Transform directionTransform;
             public SpriteRenderer directionSprite;
 
-            public SpriteRenderer skin;
+            public MeshRenderer skin;
 
             [Header("Player Info")]
             public Slider xpSlider;

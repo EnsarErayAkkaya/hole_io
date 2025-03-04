@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public enum InputType
     {

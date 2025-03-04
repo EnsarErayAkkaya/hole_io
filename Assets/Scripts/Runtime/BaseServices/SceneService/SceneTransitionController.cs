@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public class SceneTransitionController : MonoBehaviour
     {
@@ -11,7 +11,7 @@ namespace EEA.GameService
 
         private Coroutine routine;
 
-        private void Awake()
+        private void Start()
         {
             BaseServices.Instance.OnServicesReady += Initialize;
         }

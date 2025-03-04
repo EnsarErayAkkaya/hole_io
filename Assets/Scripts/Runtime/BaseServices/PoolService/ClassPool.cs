@@ -3,7 +3,7 @@
 // ClassPool<Foo>.Despawn(foo);
 using System.Collections.Generic;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public static class ClassPool<T>
         where T : class

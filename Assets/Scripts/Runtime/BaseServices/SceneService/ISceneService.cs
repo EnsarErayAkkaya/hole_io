@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public interface ISceneService
     {

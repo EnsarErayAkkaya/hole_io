@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public class SceneService : BaseService, ISceneService
     {

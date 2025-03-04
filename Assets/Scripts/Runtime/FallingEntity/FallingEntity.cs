@@ -1,4 +1,3 @@
-using EEA.GameService;
 using System;
 using UnityEngine;
 
@@ -17,6 +16,7 @@ namespace EEA.Game
         private string _playerId;
         private bool _isDestroyed;
         private Rigidbody _rigidbody;
+        private MeshRenderer _meshRenderer;
         #endregion PRIVATE
 
         #region PUBLIC
@@ -42,6 +42,7 @@ namespace EEA.Game
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _meshRenderer = GetComponent<MeshRenderer>();
         }
 
         private void OnEnable()
@@ -60,6 +61,18 @@ namespace EEA.Game
 
             if (BaseGameManager.Instance != null)
                 BaseGameManager.FallingEntityService.RemoveFallingEntity(this);
+        }
+
+        public void SetFalling(int layer)
+        {
+            references.fallingEntityTrigger.gameObject.SetActive(true);
+            ChangeLayer(layer);
+        }
+
+        public void SetNotFalling(int layer)
+        {
+            references.fallingEntityTrigger.gameObject.SetActive(false);
+            ChangeLayer(layer);
         }
 
         public void ChangeLayer(int layer)
@@ -84,6 +97,11 @@ namespace EEA.Game
         {
             if (!_rigidbody.IsSleeping())
                 _rigidbody.Sleep();
+        }
+
+        public void SetMaterial(Material material)
+        {
+            _meshRenderer.sharedMaterial = material;
         }
 
         private void OnTriggerEnter(Collider other)

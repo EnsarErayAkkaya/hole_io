@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     [System.Serializable]
     public struct PoolInitializeData
@@ -11,7 +11,7 @@ namespace EEA.GameService
         [SerializeField] public int capacity;
     }
 
-    [CreateAssetMenu(fileName = "PoolServiceSettings", menuName = "GameServices/Pool Settings", order = 3)]
+    [CreateAssetMenu(fileName = "PoolServiceSettings", menuName = "BaseServices/Pool Settings", order = 3)]
     public class PoolServiceSettings : ScriptableObject
     {
         public int defaultPoolCapacity = 100;

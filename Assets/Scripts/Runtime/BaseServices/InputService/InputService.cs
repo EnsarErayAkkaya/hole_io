@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public class InputService : BaseService, IInputService
     {

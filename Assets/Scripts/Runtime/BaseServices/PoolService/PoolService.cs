@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public class PoolService : BaseService, IPoolService, ITickable
     {

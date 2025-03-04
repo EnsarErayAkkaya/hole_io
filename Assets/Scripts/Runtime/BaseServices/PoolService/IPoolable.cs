@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public interface IPoolable
     {

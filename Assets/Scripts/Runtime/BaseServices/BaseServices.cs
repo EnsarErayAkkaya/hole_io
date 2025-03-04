@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public class BaseServices : MonoBehaviour
     {
@@ -49,9 +49,12 @@ namespace EEA.GameService
             poolService = BindServiceInterfaces<PoolService>(new PoolService(settings.PoolServiceSettings));
             sceneService = BindServiceInterfaces<SceneService>(new SceneService(settings.SceneServiceSettings));
 
-            OnServicesReady?.Invoke();
-
             DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            OnServicesReady?.Invoke();
         }
 
         private void Update()

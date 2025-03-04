@@ -5,9 +5,9 @@ using System.Linq;
 using UnityEngine;
 using NaughtyAttributes;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
-    [CreateAssetMenu(fileName = "SceneServiceSettings", menuName = "GameServices/Scene/Scene Service Settings", order = 0)]
+    [CreateAssetMenu(fileName = "SceneServiceSettings", menuName = "BaseServices/Scene/Scene Service Settings", order = 0)]
     public sealed class SceneServiceSettings : ScriptableObject
     {
         [BoxGroup("Test")]

@@ -15,7 +15,10 @@ namespace EEA.Game
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.ChangeLayer(references.fallingEntityLayer);
+                if (entity.RequiredSize > _currentSize)
+                    return;
+
+                entity.SetFalling(references.fallingEntityLayer);
                 entity.WakeUpRigidbody();
             }
         }
@@ -23,12 +26,15 @@ namespace EEA.Game
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.ChangeLayer(references.fallingEntityLayer);
+                if (entity.RequiredSize > _currentSize)
+                    return;
+
+                entity.SetFalling(references.fallingEntityLayer);
                 entity.WakeUpRigidbody();
             }
             else if (other.gameObject.CompareTag(references.HoleTag))
             {
-                
+                // KILL OTHER HOLE
             }
         }
 
@@ -36,7 +42,10 @@ namespace EEA.Game
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                entity.ChangeLayer(references.entityLayer);
+                if (entity.RequiredSize > _currentSize)
+                    return;
+
+                entity.SetNotFalling(references.entityLayer);
                 entity.WakeUpRigidbody();
             }
         }

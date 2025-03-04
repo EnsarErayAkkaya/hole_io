@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
     public abstract class BaseService
     {

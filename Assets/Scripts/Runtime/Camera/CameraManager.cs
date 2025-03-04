@@ -8,21 +8,45 @@ namespace EEA.Game
         [SerializeField]
         public EditorReferences references;
 
-        public void SetCameraTarget(Transform target)
+        private void Start()
         {
-            references.cameraFollow.Target = target;
+            BaseGameManager.PlayerService.OnPlayerLevelUp += OnPlayerLevelUp;
         }
 
-        public void UpdateCameraCoom(float distance, float height)
+        private void OnPlayerLevelUp(PlayerBase playerBase)
         {
-            this.references.cameraFollow.SetDistance(distance);
-            this.references.cameraFollow.SetHeight(height);
+            if (playerBase.transform == references.cameraFollow.Target)
+            {
+                UpdateCamera(playerBase);
+            }
+        }
+
+        public void SetCameraTarget(PlayerBase playerBase)
+        {
+            if (playerBase is Player)
+            {
+                var player = playerBase as Player;
+                player.playerReferences.worldCanvas.worldCamera = references.uiCamera;
+            }
+            
+            references.cameraFollow.Target = playerBase.transform;
+
+            UpdateCamera(playerBase);
+        }
+
+        private void UpdateCamera(PlayerBase playerBase)
+        {
+            float levelProgress = (float)(playerBase.Level - 1) / 19f;
+
+            references.cameraFollow.SetDistance(Mathf.Lerp(5f, 80f, levelProgress));
+            references.cameraFollow.SetHeight(Mathf.Lerp(7f, 100f, levelProgress));
         }
 
         [Serializable]
         public class EditorReferences
         {
             public CameraFollow cameraFollow;
+            public Camera uiCamera;
         }
     }
 }

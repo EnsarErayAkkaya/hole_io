@@ -20,3 +20,7 @@ MonoBehaviour:
       type: 3}
     preload: 0
     capacity: 1
+  - poolItem: {fileID: 2921528669474117139, guid: 0f9ce09dbdf00d741b0643b14c6064cb,
+      type: 3}
+    preload: 8
+    capacity: 100

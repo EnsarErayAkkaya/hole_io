@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-namespace EEA.GameService
+namespace EEA.BaseService
 {
-    [CreateAssetMenu(fileName = "SceneConfig", menuName = "GameServices/Scene/Scene Config", order = 1)]
+    [CreateAssetMenu(fileName = "SceneConfig", menuName = "BaseServices/Scene/Scene Config", order = 1)]
     public class SceneConfig : ScriptableObject
     {
         public SceneReference sceneReference;
