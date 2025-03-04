@@ -9,15 +9,15 @@ namespace EEA.Game
     [RequireComponent(typeof(Rigidbody))]
     public class FallingEntity : MonoBehaviour
     {
-        [SerializeField]
         public EditorReferences references;
 
-        #region PRIVATE
-        private string _playerId;
-        private bool _isDestroyed;
-        private Rigidbody _rigidbody;
-        private MeshRenderer _meshRenderer;
-        #endregion PRIVATE
+        #region PROTECTED
+        protected string _playerId;
+        protected bool _isDestroyed;
+        protected Rigidbody _rigidbody;
+        protected MeshRenderer _meshRenderer;
+        protected Collider _collider;
+        #endregion PROTECTED
 
         #region PUBLIC
 
@@ -30,12 +30,6 @@ namespace EEA.Game
             set => references.requiredSize = value;
         }
 
-        public int Points
-        {
-            get => references.points;
-            set => references.points = value;
-        }
-
         public bool CanBeTransparent => references.canBeTransparent;
         #endregion PUBLIC
 
@@ -43,6 +37,7 @@ namespace EEA.Game
         {
             _rigidbody = GetComponent<Rigidbody>();
             _meshRenderer = GetComponent<MeshRenderer>();
+            _collider = GetComponent<MeshCollider>();
         }
 
         private void OnEnable()
@@ -63,22 +58,37 @@ namespace EEA.Game
                 BaseGameManager.FallingEntityService.RemoveFallingEntity(this);
         }
 
-        public void SetFalling(int layer)
+        private void OnTriggerEnter(Collider other)
         {
-            references.fallingEntityTrigger.gameObject.SetActive(true);
+            if (!other.CompareTag(references.holeBottomTag) || _isDestroyed)
+                return;
+
+            this._playerId = other.GetComponentInParent<PlayerBase>().PlayerId;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag(references.holeDestroyTag) || _isDestroyed)
+                return;
+
+            _isDestroyed = true;
+
+            BaseGameManager.FallingEntityService.ClearFallingEntity(this);
+        }
+
+        public virtual void SetFalling(int layer)
+        {
             ChangeLayer(layer);
         }
 
-        public void SetNotFalling(int layer)
+        public virtual void SetNotFalling(int layer)
         {
-            references.fallingEntityTrigger.gameObject.SetActive(false);
             ChangeLayer(layer);
         }
 
-        public void ChangeLayer(int layer)
+        public virtual void ChangeLayer(int layer)
         {
             gameObject.layer = layer;
-            references.fallingEntityTrigger.layer = layer;
         }
 
         /// <summary>
@@ -104,32 +114,11 @@ namespace EEA.Game
             _meshRenderer.sharedMaterial = material;
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag(references.holeBottomTag) || _isDestroyed)
-                return;
-
-            this._playerId = other.GetComponentInParent<PlayerBase>().PlayerId;
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag(references.holeDestroyTag) || _isDestroyed)
-                return;
-            
-            _isDestroyed = true;
-
-            BaseGameManager.FallingEntityService.ClearFallingEntity(this);
-        }
-
         [Serializable]
         public class EditorReferences
         {
-            public GameObject fallingEntityTrigger;
             [Range(1f, 20f)]
             public int requiredSize = 1;
-            [Range(1f, 20f)]
-            public int points = 1;
             public bool canBeTransparent;
             [Tag] public string holeBottomTag;
             [Tag] public string holeDestroyTag;

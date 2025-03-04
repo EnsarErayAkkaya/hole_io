@@ -23,9 +23,11 @@ namespace EEA.Game
         protected PlayerService _playerService;
         protected FallingEntityService _fallingEntityService = new();
         protected TransparencyService _transparencyService;
+        protected WaypointManager _waypointManager;
 
         public static IFallingEntityService FallingEntityService => Instance._fallingEntityService;
         public static IPlayerService PlayerService => Instance._playerService;
+        public static IWaypointManager WaypointManager => Instance._waypointManager;
         #endregion SERVICES
 
         #region PUBLIC
@@ -46,12 +48,6 @@ namespace EEA.Game
                 if (_instance == null)
                 {
                     _instance = FindObjectOfType<BaseGameManager>();
-
-                    /*if (_instance == null)
-                    {
-                        GameObject singletonObject = new GameObject("BaseGameManager");
-                        _instance = singletonObject.AddComponent<BaseGameManager>();
-                    }*/
                 }
                 return _instance;
             }
@@ -69,6 +65,7 @@ namespace EEA.Game
 
             _playerService = new PlayerService(references.playerServiceSettings);
             _transparencyService = new TransparencyService(references.transparencyServiceSettings);
+            _waypointManager = new WaypointManager();
 
             InitializeGame();
         }

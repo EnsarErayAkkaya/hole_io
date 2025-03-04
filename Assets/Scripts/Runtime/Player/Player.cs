@@ -10,10 +10,14 @@ namespace EEA.Game
         [SerializeField]
         public PlayerEditorReferences playerReferences;
 
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
             BaseServices.InputService.OnInputReceived += OnInputReceived;
+        }
+
+        private void OnDisable()
+        {
+            BaseServices.InputService.OnInputReceived -= OnInputReceived;
         }
 
         private void OnInputReceived(InputType type, List<Vector3> positions)

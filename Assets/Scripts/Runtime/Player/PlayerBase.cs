@@ -21,7 +21,6 @@ namespace EEA.Game
         #region PRIVATE
         private string _id;
         private string _playerName;
-        private int _points;
         private int _xp;
         private int _level = 1;
         private float _speed = 1f;
@@ -48,12 +47,6 @@ namespace EEA.Game
         {
             get => _id;
             set => _id = value;
-        }
-
-        public int Points
-        {
-            get => _points;
-            set => _points = value;
         }
 
         public int Xp => _xp;
@@ -115,8 +108,6 @@ namespace EEA.Game
                 references.sliderText.text = $"{_xp}/{requiredXp}";
             }
         }
-
-        public void AddPoints(int pts) => _points += pts;
 
         public void SetLevel(int level)
         {

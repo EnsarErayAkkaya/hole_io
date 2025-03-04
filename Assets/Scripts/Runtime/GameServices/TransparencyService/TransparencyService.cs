@@ -33,9 +33,7 @@ namespace EEA.Game
 
             Vector3 rayDirection = _targetTransform.position - _mainCamera.transform.position;
 
-            float maxDistance = rayDirection.magnitude;
-
-            RaycastHit[] raycastHitArray = Physics.RaycastAll(_mainCamera.transform.position - rayDirection * 2, rayDirection.normalized, maxDistance * 3, _settings.transparencyCheckLayermask, QueryTriggerInteraction.Ignore);
+            RaycastHit[] raycastHitArray = Physics.RaycastAll(_mainCamera.transform.position - rayDirection * 2, rayDirection.normalized, rayDirection.magnitude * 3, _settings.transparencyCheckLayermask, QueryTriggerInteraction.Ignore);
 
             _foundEntities.Clear();
 

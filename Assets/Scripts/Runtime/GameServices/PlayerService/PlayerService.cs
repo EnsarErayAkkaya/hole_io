@@ -57,7 +57,6 @@ namespace EEA.BaseService
             if (_playersDict.TryGetValue(entity.PlayerId, out PlayerBase player))
             {
                 int exp = _settings.GetPointsForEntityLevel(entity.RequiredSize);
-                player.AddPoints(exp);
                 player.AddXp(exp, _settings.GetRequiredExpToLevelUp(player.Level), _settings.GetRequiredExpToLevelUp(player.Level + 1));
 
                 UIManager.Instance.ShowFloatingText($"+{exp}");
