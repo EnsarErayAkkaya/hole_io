@@ -8,27 +8,36 @@ namespace EEA.Game
         [SerializeField]
         private WaypointFollower _waypointFollower;
 
+        private float _settedFallingTime = 0;
+
         public WaypointFollower WaypointFollower => _waypointFollower;
 
-        public void Init()
-        {
-            _waypointFollower.StartFollowing();
-        }
+        // IMPORTANT NOTE: WHEN RIGIDBODY isKinematic CHANGED, OnExitTrigger TRIGGERS INSTANTLY
+        // I ADDED A TIMER TO FIX THIS ISSUE
+        // SEE MORE: https://issuetracker.unity3d.com/issues/physics-rigidbody-ontriggerexit-slash-enter-methods-are-called-when-toggle-is-kinematic-on-slash-off
 
         public override void SetFalling(int layer)
         {
+            // only set if rigidbody was kinematic and we are changing it
+            if (_rigidbody.isKinematic)
+                _settedFallingTime = Time.time;
+
             SetKinematic(false);
 
             base.SetFalling(layer);
-
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
 
             _waypointFollower.StopFollowing();
         }
 
         public override void SetNotFalling(int layer)
         {
+            // Entity once fell down, cant set not falling
+            if (transform.position.y < -1f) return;
+
+            // if just set falling return
+            if (_settedFallingTime + 0.1f > Time.time)
+                return;
+
             SetKinematic(true);
 
             base.SetNotFalling(layer);

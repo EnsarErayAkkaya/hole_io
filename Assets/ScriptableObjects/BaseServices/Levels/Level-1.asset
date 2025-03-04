@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48369511baed10c44b9c8ee1b272efe4, type: 3}
-  m_Name: MenuScene
+  m_Name: Level-1
   m_EditorClassIdentifier: 
   sceneReference:
-    asset: {fileID: 102900000, guid: 3f24eb739b8493945bffe4120b3444be, type: 3}
-    guid: 3f24eb739b8493945bffe4120b3444be
+    asset: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
+    guid: 99c9720ab356a0642a771bea13969a05
   loadMode: 1
   removeAllOtherScenes: 1
-  showSceneTransition: 1
+  showSceneTransition: 0

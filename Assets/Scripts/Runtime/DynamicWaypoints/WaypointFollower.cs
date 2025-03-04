@@ -19,6 +19,12 @@ namespace EEA.Game
             get => _fromNode;
             set => _fromNode = value;
         }
+
+        public DynamicWaypointNode ToNode
+        {
+            get => _toNode;
+            set => _toNode = value;
+        }
         #endregion PUBLIC
 
         private void Start()

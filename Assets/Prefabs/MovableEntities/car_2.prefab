@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 5362641861607053505}
   - component: {fileID: 2969056743226781549}
   - component: {fileID: 508531270510351887}
-  - component: {fileID: 1109359560580891618}
   - component: {fileID: 8805836743558643323}
   - component: {fileID: 7347761913633512078}
   - component: {fileID: 3631061589776569888}
+  - component: {fileID: 4807050436638876151}
   m_Layer: 9
-  m_Name: transport_cool_009
+  m_Name: car_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7701774271841356457}
-  m_Mesh: {fileID: -1799084523790276064, guid: 53da55e26c048cc4187f4846b1c2c22f, type: 3}
+  m_Mesh: {fileID: -627793091971085240, guid: 84a3e28dbdf2c60478e1436ea534bc88, type: 3}
 --- !u!23 &508531270510351887
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87,28 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1109359560580891618
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7701774271841356457}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1799084523790276064, guid: 53da55e26c048cc4187f4846b1c2c22f, type: 3}
 --- !u!54 &8805836743558643323
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,8 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   references:
-    speed: 1
-    rotationSpeed: 1
+    speed: 3.5
+    rotationSpeed: 3
     maxReattachDistance: 4
     reachedDistance: 1
 --- !u!114 &3631061589776569888
@@ -171,3 +149,25 @@ MonoBehaviour:
     holeBottomTag: HoleBottom
     holeDestroyTag: HoleDestroy
   _waypointFollower: {fileID: 7347761913633512078}
+--- !u!64 &4807050436638876151
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7701774271841356457}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -627793091971085240, guid: 84a3e28dbdf2c60478e1436ea534bc88, type: 3}

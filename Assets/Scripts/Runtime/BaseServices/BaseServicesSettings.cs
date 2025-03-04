@@ -7,6 +7,7 @@ namespace EEA.BaseService
     {
         public PoolServiceSettings PoolServiceSettings;
         public SceneServiceSettings SceneServiceSettings;
+        public LevelServiceSettings LevelServiceSettings;
 
         public bool debugLog = true;
     }

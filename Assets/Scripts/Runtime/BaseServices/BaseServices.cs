@@ -19,10 +19,12 @@ namespace EEA.BaseService
         private InputService inputService;
         private PoolService poolService;
         private SceneService sceneService;
+        private LevelService levelService;
 
         public static IInputService InputService => instance.inputService;
         public static IPoolService PoolService => instance.poolService;
         public static ISceneService SceneService => instance.sceneService;
+        public static ILevelService LevelService => instance.levelService;
         #endregion SERVICES
 
         #region EVENTS
@@ -45,6 +47,7 @@ namespace EEA.BaseService
             instance = this;
 
             // Bind Services and interfaces
+            levelService = BindServiceInterfaces<LevelService>(new LevelService(settings.LevelServiceSettings));
             inputService = BindServiceInterfaces<InputService>(new InputService());
             poolService = BindServiceInterfaces<PoolService>(new PoolService(settings.PoolServiceSettings));
             sceneService = BindServiceInterfaces<SceneService>(new SceneService(settings.SceneServiceSettings));

@@ -8,7 +8,7 @@ using NaughtyAttributes;
 namespace EEA.BaseService
 {
     [CreateAssetMenu(fileName = "SceneServiceSettings", menuName = "BaseServices/Scene/Scene Service Settings", order = 0)]
-    public sealed class SceneServiceSettings : ScriptableObject
+    public class SceneServiceSettings : ScriptableObject
     {
         [BoxGroup("Test")]
         public bool loadTestScene = false;

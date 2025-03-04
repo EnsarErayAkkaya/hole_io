@@ -8,6 +8,7 @@ namespace EEA.Game
     {
         public Player playerPrefab;
         public AIPlayer aiPlayerPrefab;
+        public int aiPlayerCount;
 
         [SerializeField] private List<int> _requiredExpsToLevelUp;
         [SerializeField] private List<int> _pointsForEntityLevel;

@@ -9,6 +9,7 @@ namespace EEA.Game
         private HashSet<FallingEntity> _fallingEntities;
 
         public Action<FallingEntity> OnFallingEntityCollected { get; set; }
+        public HashSet<FallingEntity> FallingEntities => _fallingEntities;
 
         public FallingEntityService()
         {

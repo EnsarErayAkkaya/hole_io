@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 600007068443737934}
   - component: {fileID: 5453786632203202939}
+  - component: {fileID: 585276044578059902}
   m_Layer: 0
   m_Name: GameServices
   m_TagString: Untagged
@@ -45,3 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 11400000, guid: 756fe15a7fc1774409a773298194f10e, type: 2}
+--- !u!81 &585276044578059902
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5675410126381771786}
+  m_Enabled: 1

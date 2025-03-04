@@ -1,4 +1,3 @@
-using DG.Tweening;
 using EEA.BaseService;
 using System;
 using UnityEngine;
@@ -11,8 +10,6 @@ namespace EEA.Game
     /// <summary>
     /// Abstract Base Class for every player in the game.
     /// </summary>
-
-    [RequireComponent(typeof(NavMeshAgent))]
     public abstract class PlayerBase : MonoBehaviour
     {
         [SerializeField]
@@ -28,10 +25,16 @@ namespace EEA.Game
         private bool _isDead;
         private Color _color;
         private Transform _cachedTransform;
-        private NavMeshAgent _agent;
+        private bool _canMove = true;
+        private Vector3 bounds;
         #endregion PRIVATE
 
         #region PUBLIC
+        public bool CanMove
+        {
+            get => this._canMove;
+            set => this._canMove = value;
+        }
 
         public string PlayerName
         {
@@ -64,11 +67,13 @@ namespace EEA.Game
         protected virtual void Awake()
         {
             _cachedTransform = transform;
-            _agent = GetComponent<NavMeshAgent>();
-            references.xpSlider.value = 0.0f;
-            references.sliderText.text = $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}";
+
+            UpdateXpSlider(0f, $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}");
 
             SetLevel(1);
+
+            bounds = BaseServices.LevelService.GetCurrentLevelConfig().levelSize;
+
         }
 
         /// <summary>
@@ -77,7 +82,20 @@ namespace EEA.Game
         /// <param name="offset"></param>
         public void Move(Vector3 offset)
         {
-            _agent.Move(offset * _speed * Time.deltaTime);
+            if (!_canMove) return;
+
+            Vector3 newPos = _cachedTransform.position + offset * Time.deltaTime * _speed;
+
+            newPos += references.directionTransform.forward * (_size * 0.5f);
+            
+            if (IsPositionValid(newPos))
+                _cachedTransform.position += offset * Time.deltaTime * _speed;
+        }
+        private bool IsPositionValid(Vector3 point)
+        {
+            return (point.x >= -bounds.x && point.x <= bounds.x) &&
+                (point.y >= -bounds.y && point.y <= bounds.y) &&
+                (point.z >= -bounds.z && point.z <= bounds.z);
         }
 
         public void AddXp(int xp, int requiredXp, int requiredXpNextLevel)
@@ -89,23 +107,20 @@ namespace EEA.Game
 
             if (requiredXp == -1)
             {
-                references.xpSlider.value = 1f;
-                references.sliderText.gameObject.SetActive(false);
-
+                UpdateXpSlider(1f, null);
             }
             else if (_xp >= requiredXp && requiredXpNextLevel != -1)
             {
                 SetLevel(_level + 1);
                 _xp -= requiredXp;
-                references.xpSlider.value = Mathf.Clamp01((float)_xp / (float)requiredXpNextLevel);
-                references.sliderText.text = $"{_xp}/{requiredXpNextLevel}";
+
+                UpdateXpSlider(Mathf.Clamp01((float)_xp / (float)requiredXpNextLevel), $"{_xp}/{requiredXpNextLevel}");
 
                 BaseGameManager.PlayerService.PlayerLeveledUp(this);
             }
             else
             {
-                references.xpSlider.value = Mathf.Clamp01((float)_xp / (float)requiredXp);
-                references.sliderText.text = $"{_xp}/{requiredXp}";
+                UpdateXpSlider(Mathf.Clamp01((float)_xp / (float)requiredXp), $"{_xp}/{requiredXp}");
             }
         }
 
@@ -125,6 +140,27 @@ namespace EEA.Game
             references.fallingEntityTrigger.SetMinimumSize(_level);
 
             references.levelText.text = $"LVL {_level}";
+        }
+
+        private void UpdateXpSlider(float value, string text)
+        {
+            if (references.xpSlider != null)
+                references.xpSlider.value = value;
+
+            if (references.sliderText != null)
+            {
+                if (text == null)
+                {
+                    references.sliderText.gameObject.SetActive(false);
+                    references.sliderText.text = "";
+                }
+                else
+                {
+                    references.sliderText.gameObject.SetActive(true);
+                    references.sliderText.text = text;
+                }
+
+            }
         }
 
         public void SetSpeed(float speed) => _speed = speed;

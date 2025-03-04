@@ -111,7 +111,8 @@ namespace EEA.Game
 
         public void SetMaterial(Material material)
         {
-            _meshRenderer.sharedMaterial = material;
+            if (_meshRenderer != null)
+                _meshRenderer.sharedMaterial = material;
         }
 
         [Serializable]

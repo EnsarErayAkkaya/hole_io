@@ -16,4 +16,6 @@ MonoBehaviour:
     type: 2}
   SceneServiceSettings: {fileID: 11400000, guid: fff7557faabc0e84b9577ad7d1e64b93,
     type: 2}
+  LevelServiceSettings: {fileID: 11400000, guid: d10edbb16f3121240a674b8bbefe86ac,
+    type: 2}
   debugLog: 1

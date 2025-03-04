@@ -74,6 +74,7 @@ namespace EEA.BaseService
         {
             var aiPlayer = BaseServices.PoolService.Spawn(_settings.aiPlayerPrefab);
 
+            aiPlayer.SetPosition(position);
             return CreatePlayer(aiPlayer);
         }
 

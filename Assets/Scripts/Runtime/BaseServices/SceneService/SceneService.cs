@@ -106,11 +106,11 @@ namespace EEA.BaseService
             await RemoveScene(sceneConfig.sceneReference);
         }
 
-        private async Task LoadScene(SceneReference sceneReference, LoadSceneMode loadMode)
+        public async Task LoadScene(SceneReference sceneReference, LoadSceneMode loadMode)
         {
             await AwaitCompletion(SceneManager.LoadSceneAsync(sceneReference.BuildIndex, loadMode));
         }
-        private async Task RemoveScene(SceneReference sceneReference)
+        public async Task RemoveScene(SceneReference sceneReference)
         {
             await AwaitCompletion(SceneManager.UnloadSceneAsync(sceneReference.BuildIndex));
         }

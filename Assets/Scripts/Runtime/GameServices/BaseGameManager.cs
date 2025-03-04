@@ -77,7 +77,7 @@ namespace EEA.Game
             OnServicesReady?.Invoke();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             _transparencyService.Update();
         }

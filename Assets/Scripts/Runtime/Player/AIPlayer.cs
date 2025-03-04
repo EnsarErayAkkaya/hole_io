@@ -1,35 +1,27 @@
-using EEA.BaseService;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace EEA.Game
 {
     public class AIPlayer : PlayerBase
     {
-        /*private void Update()
+        private FallingEntity _target;
+
+        private void Update()
         {
-            
+            if (_target == null)
+            {
+                SelectTarget();
+            }
+
+            Move((_target.transform.position - transform.position).normalized);
         }
 
-
-        private void OnInputReceived(InputType type, List<Vector3> positions)
+        private void SelectTarget()
         {
-            if (type == InputType.Drag)
-            {
-                // offset calculated and axis converted to XZ from XY
-                Vector3 offset = positions[0] - positions[1];
-                offset.z = offset.y;
-                offset.y = 0;
+            var entities = BaseGameManager.FallingEntityService.FallingEntities;
 
-                // clamp offst to joystick radius
-                offset = Vector3.ClampMagnitude(offset, joystickRadius);
-
-                Vector3 percentedOffset = offset / joystickRadius;
-
-                //Debug.Log($"Offset: {offset}, percentedOffset: {percentedOffset}");
-
-                this.Move(percentedOffset);
-            }
-        }*/
+            _target = entities.ElementAt(Random.Range(0, entities.Count));
+        }
     }
 }

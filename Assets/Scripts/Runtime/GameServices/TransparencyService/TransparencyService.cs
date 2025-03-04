@@ -56,7 +56,11 @@ namespace EEA.Game
             {
                 if (!_foundEntities.Contains(alreadyTransparentEntity))
                 {
-                    alreadyTransparentEntity.SetMaterial(_settings.opaqueMat);
+                    if (alreadyTransparentEntity != null)
+                    {
+                        alreadyTransparentEntity.SetMaterial(_settings.opaqueMat);
+                    }
+
                     return true;
                 }
 
