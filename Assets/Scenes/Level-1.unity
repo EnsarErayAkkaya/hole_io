@@ -153818,7 +153818,7 @@ MonoBehaviour:
     transparencyServiceSettings: {fileID: 11400000, guid: 65c18e5cf7812ac40b1d2dc2102b5b07,
       type: 2}
   timedModeReferences:
-    gameDurationSeconds: 60
+    gameDurationSeconds: 180
 --- !u!1001 &1747548110
 PrefabInstance:
   m_ObjectHideFlags: 0
