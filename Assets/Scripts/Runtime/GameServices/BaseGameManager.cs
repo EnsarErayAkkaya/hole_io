@@ -32,11 +32,15 @@ namespace EEA.Game
 
         #region PUBLIC
         public GameState GameState => _gameState;
+        public CameraManager CameraManager => _cameraManager;
         #endregion PUBLIC
 
         #region EVENTS
         public delegate void OnServicesReadyHandler();
         public event OnServicesReadyHandler OnServicesReady;
+
+        public delegate void OnGameCompletedHandler();
+        public OnGameCompletedHandler OnGameCompleted;
         #endregion EVENTS
 
         #region SINGLETON
@@ -70,6 +74,13 @@ namespace EEA.Game
             InitializeGame();
         }
 
+
+        private void OnDestroy()
+        {
+            _playerService.Clear();
+            _transparencyService.Clear();
+        }
+
         protected virtual void InitializeGame()
         {
             _cameraManager = FindObjectOfType<CameraManager>();
@@ -85,9 +96,18 @@ namespace EEA.Game
         public abstract void GameStart();
         public abstract void GameEnd();
 
-        public void RestartGame()
+        public async void RestartGame()
         {
-            BaseServices.SceneService.LoadGameScene();
+            var config = BaseServices.LevelService.GetCurrentLevelConfig();
+
+            await BaseServices.SceneService.RemoveScene(config.sceneConfig);
+
+            await BaseServices.SceneService.LoadScene(config.sceneConfig);
+        }
+
+        public void LoadMenu()
+        {
+            BaseServices.SceneService.LoadMenuScene();
         }
 
         [Serializable]

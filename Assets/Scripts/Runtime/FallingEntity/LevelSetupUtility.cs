@@ -86,7 +86,7 @@ namespace EEA.Game
 
                 int size = Mathf.CeilToInt(minRadius);
                 // set required size
-                entity.references.requiredSize = minRadius > 5 ? size + 1 : size;
+                entity.references.requiredLevel = minRadius > 5 ? size + 1 : size;
 
                 // calculate max height for transperency
                 float maxHeight = CalculateMaxHeight(meshCollider);

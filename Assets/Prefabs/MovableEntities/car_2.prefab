@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   references:
-    requiredSize: 3
+    requiredLevel: 3
     canBeTransparent: 0
     holeBottomTag: HoleBottom
     holeDestroyTag: HoleDestroy

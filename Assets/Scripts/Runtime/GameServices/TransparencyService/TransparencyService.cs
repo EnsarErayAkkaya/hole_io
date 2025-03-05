@@ -26,6 +26,11 @@ namespace EEA.Game
                 _targetTransform = playerBase.transform;
         }
 
+        public void Clear()
+        {
+            BaseGameManager.PlayerService.OnPlayerCreated -= OnPlayerCreated;
+        }
+
         public void Update()
         {
             if (_targetTransform == null)

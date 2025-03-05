@@ -67,6 +67,11 @@ namespace EEA.Game
             BaseServices.InputService.OnInputReceived += OnInputReceived;
         }
 
+        private void OnDestroy()
+        {
+            BaseServices.InputService.OnInputReceived -= OnInputReceived;
+        }
+
         private void OnInputReceived(InputType type, List<Vector3> positions)
         {
             if (type == InputType.Drag)

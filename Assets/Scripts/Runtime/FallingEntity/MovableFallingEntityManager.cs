@@ -17,18 +17,21 @@ namespace EEA.Game
 
                 var fromNode = BaseGameManager.WaypointManager.GetRandomWaypoint();
 
-                instance.transform.parent = transform;
+                if (instance != null)
+                {
+                    instance.transform.parent = transform;
 
-                var toNode = fromNode.GetRandomNeighbour();
+                    var toNode = fromNode.GetRandomNeighbour();
 
-                instance.WaypointFollower.FromNode = fromNode;
-                instance.WaypointFollower.ToNode = toNode;
+                    instance.WaypointFollower.FromNode = fromNode;
+                    instance.WaypointFollower.ToNode = toNode;
 
-                // start from a random point between from and to nodes
-                instance.transform.position = fromNode.transform.position +
-                    ((toNode.transform.position - fromNode.transform.position) * Random.value);
+                    // start from a random point between from and to nodes
+                    instance.transform.position = fromNode.transform.position +
+                        ((toNode.transform.position - fromNode.transform.position) * Random.value);
 
-                instance.WaypointFollower.StartFollowing();
+                    instance.WaypointFollower.StartFollowing();
+                }
             }
         }
 

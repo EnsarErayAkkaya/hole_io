@@ -24,10 +24,10 @@ namespace EEA.Game
         public string PlayerId => _playerId;
         public bool IsDestroyed => _isDestroyed;
 
-        public int RequiredSize
+        public int RequiredLevel
         {
-            get => references.requiredSize;
-            set => references.requiredSize = value;
+            get => references.requiredLevel;
+            set => references.requiredLevel = value;
         }
 
         public bool CanBeTransparent => references.canBeTransparent;
@@ -44,8 +44,6 @@ namespace EEA.Game
         {
             _playerId = null;
             _isDestroyed = false;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
 
             BaseGameManager.FallingEntityService.AddFallingEntity(this);
         }
@@ -119,7 +117,7 @@ namespace EEA.Game
         public class EditorReferences
         {
             [Range(1f, 20f)]
-            public int requiredSize = 1;
+            public int requiredLevel = 1;
             public bool canBeTransparent;
             [Tag] public string holeBottomTag;
             [Tag] public string holeDestroyTag;

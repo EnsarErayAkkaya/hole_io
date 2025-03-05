@@ -4,12 +4,13 @@ namespace EEA.Game
 {
     public class FloatingJoystick : Joystick
     {
-        [SerializeField] private Vector2 originalPosition;
+        //[SerializeField] private Vector2 originalPosition;
         protected override void Start()
         {
             base.Start();
 
-            background.anchoredPosition = ScreenPointToAnchoredPosition(originalPosition);
+            background.pivot = new Vector2(0.5f, 0.5f);
+            background.anchoredPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.25f);
         }
 
         public override void OnHold(Vector3 position)
@@ -22,8 +23,9 @@ namespace EEA.Game
 
         public override void OnFingerUp()
         {
-            background.anchoredPosition = ScreenPointToAnchoredPosition(originalPosition);
-            //background.gameObject.SetActive(false);
+            background.pivot = new Vector2(0.5f, 0.5f);
+            background.anchoredPosition = new Vector2(Screen.width * 0.5f, Screen.height * 0.25f);
+
             base.OnFingerUp();
         }
     }

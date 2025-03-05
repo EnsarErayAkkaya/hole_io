@@ -7,6 +7,6 @@ namespace EEA.BaseService
         public int CurrentLevel { get; }
         public Task LoadNextLevel();
         public LevelServiceSettings.LevelConfig GetCurrentLevelConfig();
-
+        public void LevelCompleted();
     }
 }

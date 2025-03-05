@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
+using System.Threading.Tasks;
 
 namespace EEA.Game
 {
@@ -26,7 +28,8 @@ namespace EEA.Game
         private Color _color;
         private Transform _cachedTransform;
         private bool _canMove = true;
-        private Vector3 bounds;
+        private Vector3 _bounds;
+        private int _killCount;
         #endregion PRIVATE
 
         #region PUBLIC
@@ -34,6 +37,12 @@ namespace EEA.Game
         {
             get => this._canMove;
             set => this._canMove = value;
+        }
+
+        public int KillCount
+        {
+            get => this._killCount;
+            set => this._killCount = value;
         }
 
         public string PlayerName
@@ -67,13 +76,21 @@ namespace EEA.Game
         protected virtual void Awake()
         {
             _cachedTransform = transform;
+        }
 
-            UpdateXpSlider(0f, $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}");
+        public void Init()
+        {
+            _canMove = true;
+            _isDead = false;
+            _xp = 0;
+            _level = 1;
+            _size = 1;
 
             SetLevel(1);
 
-            bounds = BaseServices.LevelService.GetCurrentLevelConfig().levelSize;
+            UpdateXpSlider(0f, $"0/{BaseGameManager.PlayerService.Settings.GetRequiredExpToLevelUp(_level)}");
 
+            _bounds = BaseServices.LevelService.GetCurrentLevelConfig().levelSize;
         }
 
         /// <summary>
@@ -84,6 +101,8 @@ namespace EEA.Game
         {
             if (!_canMove) return;
 
+            offset.y = 0;
+
             Vector3 newPos = _cachedTransform.position + offset * Time.deltaTime * _speed;
 
             newPos += references.directionTransform.forward * (_size * 0.5f);
@@ -93,9 +112,8 @@ namespace EEA.Game
         }
         private bool IsPositionValid(Vector3 point)
         {
-            return (point.x >= -bounds.x && point.x <= bounds.x) &&
-                (point.y >= -bounds.y && point.y <= bounds.y) &&
-                (point.z >= -bounds.z && point.z <= bounds.z);
+            return (point.x >= -_bounds.x && point.x <= _bounds.x) &&
+                (point.z >= -_bounds.z && point.z <= _bounds.z);
         }
 
         public void AddXp(int xp, int requiredXp, int requiredXpNextLevel)
@@ -137,7 +155,7 @@ namespace EEA.Game
                 listener.OnHoleSizeChanged(levelProgressPercent);
             }
 
-            references.fallingEntityTrigger.SetMinimumSize(_level);
+            references.fallingEntityTrigger.SetLevel(_level);
 
             references.levelText.text = $"LVL {_level}";
         }
@@ -159,8 +177,29 @@ namespace EEA.Game
                     references.sliderText.gameObject.SetActive(true);
                     references.sliderText.text = text;
                 }
-
             }
+        }
+
+        public void Die()
+        {
+            ResetPlayer();
+
+            transform.DOScale(Vector3.zero, 0.3f);
+        }
+
+        private void OnDisable()
+        {
+            ResetPlayer();
+        }
+
+        public void ResetPlayer()
+        {
+            _isDead = true;
+            _xp = 0;
+            _id = null;
+            _playerName = null;
+            _level = 1;
+            _size = 1;
         }
 
         public void SetSpeed(float speed) => _speed = speed;

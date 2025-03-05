@@ -156,7 +156,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2915196635467120705}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -520,7 +520,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   references:
-    holeResizeListeners: []
+    holeResizeListeners:
+    - {fileID: 8184187173900220297}
+    - {fileID: 29330657885420108}
+    - {fileID: 8192724998783669969}
+    - {fileID: 1887691560884826735}
     fallingEntityTrigger: {fileID: 8336380717936583638}
     directionTransform: {fileID: 1136664696804278176}
     directionSprite: {fileID: 4758098808068865215}
@@ -529,6 +533,10 @@ MonoBehaviour:
     sliderText: {fileID: 0}
     nameText: {fileID: 5541230668839863452}
     levelText: {fileID: 3554177056379409727}
+  aiReferences:
+    selectTargetRadius: 70.45
+    slowDownDistance: 3.55
+    reachedTargetMaxWaitDuration: 3
 --- !u!1 &4721165963014321131
 GameObject:
   m_ObjectHideFlags: 0

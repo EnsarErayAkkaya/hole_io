@@ -21,9 +21,18 @@ namespace EEA.Game
             instance = this;
 
             mainCamera = Camera.main;
+
+            references.killCountText.text = "0";
         }
 
-        public void ShowFloatingText(string str)
+        public void UpdateTimer(int remainingSeconds)
+        {
+            int minutes = (remainingSeconds / 60);
+            int seconds = (remainingSeconds % 60);
+            references.timerText.text = $"{minutes.ToString("D2")}:{seconds.ToString("D2")}";
+        }
+
+        public void ShowXpCollectedText(string str)
         {
             if (BaseGameManager.PlayerService.Player == null)
                 return;
@@ -33,10 +42,9 @@ namespace EEA.Game
             text.transform.SetParent(references.floatingTextParent, false);
 
             text.transform.SetAsLastSibling();
-            text.fontSize = 60;
-            text.color = Color.white;
             text.text = str;
             text.transform.position = mainCamera.WorldToScreenPoint(BaseGameManager.PlayerService.Player.transform.position);
+
             DOTween.Kill(text);
 
             text.DOFade(0.0f, 0.5f)
@@ -57,32 +65,74 @@ namespace EEA.Game
 
         public void ShowKill(int count)
         {
-            DOTween.Kill(references.killText);
+            // update kill count
+            references.killCountText.text = count.ToString();
 
-            references.killText.text = references.killTexts[count].ToUpper();
+            references.killFloatingText.gameObject.SetActive(true);
+            DOTween.Kill(references.killFloatingText);
 
-            references.killText.rectTransform.DOScale(Vector3.one, 0.3f)
+            references.killFloatingText.text = references.killTexts[count - 1].ToUpper();
+
+            references.killFloatingText.DOFade(1f, 0.2f)
+                .From(0)
+                .SetId(references.killFloatingText);
+
+            references.killFloatingText.rectTransform.DOScale(Vector3.one, 0.5f)
                 .From(3)
                 .SetEase(Ease.OutBack)
                 .OnComplete(() =>
                 {
-                    references.killText.rectTransform.DOShakePosition(0.2f)
-                        .SetId(references.killText);
+                    references.killFloatingText.rectTransform.DOShakePosition(0.3f)
+                        .SetId(references.killFloatingText);
+
+                    references.killFloatingText.DOFade(0.0f, 0.4f)
+                        .From(1)
+                        .SetId(references.killFloatingText)
+                        .OnComplete(() =>
+                        {
+                            references.killFloatingText.gameObject.SetActive(false);
+                        });
                 })
-                .SetId(references.killText);
+                .SetDelay(0.2f)
+                .SetId(references.killFloatingText);
+        }
 
+        public void CreatePopup(BasePopup popup)
+        {
+            var instance = BaseServices.PoolService.Spawn(popup);
 
-            references.killText.DOFade(0.0f, 0.3f)
-                .SetId(references.killText);
+            if (instance != null)
+            {
+                instance.transform.SetParent(references.floatingTextParent, false);
+                instance.transform.SetAsLastSibling();
+
+                instance.Show();
+            }
+        }
+
+        public void DestroyPopup(BasePopup popup)
+        {
+            BaseServices.PoolService.Despawn(popup);
         }
 
         [Serializable]
         public class EditorReferences
         {
+            [Header("Floating Text")]
             public Transform floatingTextParent;
             public TextMeshProUGUI floatingTextPrefab;
-            public TextMeshProUGUI killText;
+
+            [Header("Kill Related")]
+            public TextMeshProUGUI killFloatingText;
+            public TextMeshProUGUI killCountText;
             public string[] killTexts;
+
+            [Header("Timer")]
+            public TextMeshProUGUI timerText;
+
+            [Header("Popups")]
+            public BasePopup winPopup;
+            public BasePopup losePopup;
         }
     }
 }

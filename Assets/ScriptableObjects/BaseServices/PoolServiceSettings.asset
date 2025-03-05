@@ -24,3 +24,11 @@ MonoBehaviour:
       type: 3}
     preload: 8
     capacity: 100
+  - poolItem: {fileID: 3562356897890334344, guid: 3dd20f44198abaa40837351d3b4624d8,
+      type: 3}
+    preload: 0
+    capacity: 1
+  - poolItem: {fileID: 3146677404294909317, guid: 3217f3d0a16281642b7c79474abfc48a,
+      type: 3}
+    preload: 0
+    capacity: 1

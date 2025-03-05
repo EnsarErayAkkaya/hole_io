@@ -313,7 +313,7 @@ namespace EEA.BaseService
                     }
                     else
                     {
-                        Debug.LogError("The " + _poolParent.name + " contained a null cache entry");
+                        Debug.Log("The " + _poolParent.name + " contained a null cache entry");
                     }
                 }
 

@@ -8,7 +8,7 @@ namespace EEA.Game
     public class Player : PlayerBase
     {
         [SerializeField]
-        public PlayerEditorReferences playerReferences;
+        public EditorReferences playerReferences;
 
         private void OnEnable()
         {
@@ -43,7 +43,7 @@ namespace EEA.Game
         }
 
         [Serializable]
-        public class PlayerEditorReferences
+        public class EditorReferences
         {
             public float joystickRadius;
             public Canvas worldCanvas;

@@ -58,6 +58,8 @@ namespace EEA.BaseService
         private void Start()
         {
             OnServicesReady?.Invoke();
+
+            Vibration.Init();
         }
 
         private void Update()

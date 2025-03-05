@@ -7,26 +7,27 @@ namespace EEA.Game
     {
         [SerializeField]
         public EditorReferences references;
-        private int _currentSize;
+        private int _currentLevel;
 
-        public void SetMinimumSize(int size) => this._currentSize = size;
+        public void SetLevel(int size) => this._currentLevel = size;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                if (entity.RequiredSize > _currentSize)
+                if (entity.RequiredLevel > _currentLevel)
                     return;
 
                 entity.SetFalling(references.fallingEntityLayer);
                 entity.WakeUpRigidbody();
             }
         }
+
         private void OnTriggerStay(Collider other)
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                if (entity.RequiredSize > _currentSize)
+                if (entity.RequiredLevel > _currentLevel)
                     return;
 
                 entity.SetFalling(references.fallingEntityLayer);
@@ -35,6 +36,14 @@ namespace EEA.Game
             else if (other.gameObject.CompareTag(references.HoleTag))
             {
                 // KILL OTHER HOLE
+                var otherPlayer = other.gameObject.GetComponentInParent<PlayerBase>();
+
+                if (otherPlayer != null && !otherPlayer.IsDead && otherPlayer.Level < _currentLevel)
+                {
+                    var player = gameObject.GetComponentInParent<PlayerBase>();
+
+                    BaseGameManager.PlayerService.KillPlayer(player, otherPlayer);
+                }
             }
         }
 
@@ -42,7 +51,7 @@ namespace EEA.Game
         {
             if (other.gameObject.TryGetComponent(out FallingEntity entity))
             {
-                if (entity.RequiredSize > _currentSize)
+                if (entity.RequiredLevel > _currentLevel)
                     return;
 
                 entity.SetNotFalling(references.entityLayer);

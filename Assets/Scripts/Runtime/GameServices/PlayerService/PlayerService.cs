@@ -1,6 +1,7 @@
 using EEA.Game;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace EEA.BaseService
@@ -23,6 +24,40 @@ namespace EEA.BaseService
             Color.black,
         };
 
+        private List<string> _botNames = new List<string>
+        {
+            "AlexRyder",
+            "JakeStorm",
+            "LiamShadow",
+            "MasonVolt",
+            "NoahSpecter",
+            "EthanBlaze",
+            "LucasFury",
+            "LoganDrift",
+            "OwenRogue",
+            "AidenFrost",
+            "RyanVortex",
+            "CalebEcho",
+            "NathanHavoc",
+            "IsaacPhantom",
+            "JulianFlare",
+            "DylanStriker",
+            "HunterNova",
+            "ZachTitan",
+            "ConnorHawk",
+            "JaxonBlitz",
+            "LeoStrike",
+            "CameronDash",
+            "TylerVenom",
+            "BraydenGlitch",
+            "DominicRaze",
+            "EvanQuake",
+            "AustinSurge",
+            "GavinWarp",
+            "AsherVandal",
+            "ColeReaper"
+        };
+
         private Player _player;
         #endregion PRIVATE
 
@@ -35,7 +70,8 @@ namespace EEA.BaseService
 
         #region EVENTS
         public Action<PlayerBase> OnPlayerCreated { get; set; }
-        public Action<PlayerBase> OnPlayerLevelUp{ get; set; }
+        public Action<PlayerBase> OnPlayerLevelUp { get; set; }
+        public Action<PlayerBase> OnPlayerDied{ get; set; }
         #endregion EVENTS
 
         public PlayerService(PlayerServiceSettings settings)
@@ -49,24 +85,67 @@ namespace EEA.BaseService
 
         private void OnServicesReady()
         {
+            BaseGameManager.Instance.OnServicesReady -= OnServicesReady;
+
             BaseGameManager.FallingEntityService.OnFallingEntityCollected += OnFallingEntityCollected;
+        }
+
+        public void Clear()
+        {
+            BaseGameManager.FallingEntityService.OnFallingEntityCollected -= OnFallingEntityCollected;
         }
 
         private void OnFallingEntityCollected(FallingEntity entity)
         {
             if (_playersDict.TryGetValue(entity.PlayerId, out PlayerBase player))
             {
-                int exp = _settings.GetPointsForEntityLevel(entity.RequiredSize);
+                int exp = _settings.GetPointsForEntityLevel(entity.RequiredLevel);
                 player.AddXp(exp, _settings.GetRequiredExpToLevelUp(player.Level), _settings.GetRequiredExpToLevelUp(player.Level + 1));
 
-                UIManager.Instance.ShowFloatingText($"+{exp}");
+                if (player is Player)
+                {
+                    UIManager.Instance.ShowXpCollectedText($"+{exp}");
+                    Vibration.VibratePop();
+                }
             }
         }
+
+        public async void KillPlayer(PlayerBase killer, PlayerBase victim)
+        {
+            killer.AddXp(victim.Xp, _settings.GetRequiredExpToLevelUp(killer.Level), _settings.GetRequiredExpToLevelUp(killer.Level + 1));
+
+            victim.Die();
+
+            await Task.Delay(TimeSpan.FromSeconds(0.3f));
+
+            BaseServices.PoolService.Despawn(victim.gameObject);
+
+            if (killer is Player)
+            {
+                OnPlayerDied?.Invoke(victim);
+
+                UIManager.Instance.ShowKill(++killer.KillCount);
+                Vibration.VibrateAndroid(700);
+            }
+            else if (victim is Player)
+            {
+                _player = null;
+                BaseGameManager.Instance.CameraManager.SetCameraTarget(null);
+
+                Vibration.VibrateNope();
+
+                BaseGameManager.Instance.GameEnd();
+            }
+        }
+
         public PlayerBase CreateUserPlayer(Vector3 position)
         {
             _player = BaseServices.PoolService.Spawn(_settings.playerPrefab);
 
             _player.SetPosition(position);
+
+            _player.PlayerName = "Player";
+
             return CreatePlayer(_player);
         }
 
@@ -75,8 +154,12 @@ namespace EEA.BaseService
             var aiPlayer = BaseServices.PoolService.Spawn(_settings.aiPlayerPrefab);
 
             aiPlayer.SetPosition(position);
+
+            aiPlayer.PlayerName = _botNames[UnityEngine.Random.Range(0, _botNames.Count)];
+
             return CreatePlayer(aiPlayer);
         }
+
 
         private PlayerBase CreatePlayer(PlayerBase playerBase)
         {
@@ -94,11 +177,24 @@ namespace EEA.BaseService
             if (_notUsedColors.Count <= 0)
                 _notUsedColors.AddRange(_allColors);
 
+            playerBase.Init();
+
             OnPlayerCreated?.Invoke(playerBase);
 
             return playerBase;
         }
 
+        public void ClearPlayers()
+        {
+            foreach (var item in _playersDict)
+            {
+                item.Value.ResetPlayer();
+                BaseServices.PoolService.Despawn(item.Value);
+            }
+
+            _playersDict.Clear();
+            _player = null;
+        }
         public void PlayerLeveledUp(PlayerBase playerBase)
         {
             OnPlayerLevelUp?.Invoke(playerBase);
