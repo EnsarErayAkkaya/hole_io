@@ -4,27 +4,20 @@ using UnityEngine;
 
 namespace EEA.Game
 {
-    public class WaypointManager : IWaypointManager
+    public class WaypointService : IWaypointService
     {
         private List<DynamicWaypointNode> _waypointNodes;
 
-        #region SINGLETON
-        private static WaypointManager _instance;
-        public static WaypointManager Instance => _instance;
-        #endregion SINGLETON
-
         public List<DynamicWaypointNode> WaypointNodes => _waypointNodes;
 
-        public WaypointManager()
+        public WaypointService()
         {
-            _instance = this;
-
             _waypointNodes = GameObject.FindObjectsOfType<DynamicWaypointNode>().ToList();
         }
 
         public DynamicWaypointNode GetRandomWaypoint()
         {
-            return _instance.WaypointNodes[Random.Range(0, _instance.WaypointNodes.Count)];
+            return WaypointNodes[Random.Range(0, WaypointNodes.Count)];
         }
 
         public float GetPointProjection(DynamicWaypointNode from, DynamicWaypointNode to, Vector3 point)

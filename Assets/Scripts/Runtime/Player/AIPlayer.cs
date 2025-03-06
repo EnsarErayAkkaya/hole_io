@@ -15,6 +15,7 @@ namespace EEA.Game
 
         private void Start()
         {
+            // calculate squared distnces to efficeny
             _sqrSlowDownDistance = aiReferences.slowDownDistance * aiReferences.slowDownDistance;
             _sqrSelectTargetRadius = aiReferences.selectTargetRadius * aiReferences.selectTargetRadius;
         }

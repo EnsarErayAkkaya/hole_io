@@ -36,46 +36,44 @@ namespace EEA.Game
             if (_targetTransform == null)
                 return;
 
-            Vector3 rayDirection = _targetTransform.position - _mainCamera.transform.position;
+            // calculate dir to target
+            Vector3 directionToTarget = _targetTransform.position - _mainCamera.transform.position;
+            Vector3 rayStart = _mainCamera.transform.position - directionToTarget * 2;
+            Vector3 rayDirection = directionToTarget.normalized;
+            float rayLength = directionToTarget.magnitude * 3;
 
-            RaycastHit[] raycastHitArray = Physics.RaycastAll(_mainCamera.transform.position - rayDirection * 2, rayDirection.normalized, rayDirection.magnitude * 3, _settings.transparencyCheckLayermask, QueryTriggerInteraction.Ignore);
+            // raycast
+            RaycastHit[] hits = Physics.RaycastAll(
+                rayStart, rayDirection, rayLength,
+                _settings.transparencyCheckLayermask,
+                QueryTriggerInteraction.Ignore
+            );
 
             _foundEntities.Clear();
 
-            if (raycastHitArray.Length > 0)
+            foreach (RaycastHit hit in hits)
             {
-                foreach (RaycastHit raycastHit in raycastHitArray)
+                if (hit.collider.gameObject.TryGetComponent(out FallingEntity entity) && entity.CanBeTransparent)
                 {
-                    if (raycastHit.collider.gameObject.TryGetComponent<FallingEntity>(out var fallingEntity))
-                    {
-                        if (fallingEntity.CanBeTransparent)
-                        {
-                            fallingEntity.SetMaterial(_settings.transparentMat);
-                            _foundEntities.Add(fallingEntity);
-                        }
-                    }
+                    entity.SetMaterial(_settings.transparentMat);
+                    _foundEntities.Add(entity);
                 }
             }
 
-            _transparentEntities.RemoveWhere((FallingEntity alreadyTransparentEntity) =>
+            // set entities no longer blocking the view as opaque
+            _transparentEntities.RemoveWhere(entity =>
             {
-                if (!_foundEntities.Contains(alreadyTransparentEntity))
+                if (!_foundEntities.Contains(entity))
                 {
-                    if (alreadyTransparentEntity != null)
-                    {
-                        alreadyTransparentEntity.SetMaterial(_settings.opaqueMat);
-                    }
-
-                    return true;
+                    entity?.SetMaterial(_settings.opaqueMat);
+                    return true; // Remove from _transparentEntities
                 }
-
                 return false;
             });
 
-            foreach (var item in _foundEntities)
-            {
-                _transparentEntities.Add(item);
-            }
+            // merge new entities
+            _transparentEntities.UnionWith(_foundEntities);
         }
+
     }
 }

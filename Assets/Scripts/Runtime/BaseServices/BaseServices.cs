@@ -8,7 +8,7 @@ namespace EEA.BaseService
         [SerializeField] private BaseServicesSettings settings;
 
         #region PRIVATE
-        private List<ITickable> tickables = new();
+        private List<ITickable> _tickables = new();
         #endregion PRIVATE
 
         #region PUBLIC
@@ -64,7 +64,7 @@ namespace EEA.BaseService
 
         private void Update()
         {
-            foreach (var t in tickables)
+            foreach (var t in _tickables)
             {
                 t.Tick();
             }
@@ -74,7 +74,7 @@ namespace EEA.BaseService
         {
             if (baseService is ITickable)
             {
-                tickables.Add((ITickable)baseService);
+                _tickables.Add((ITickable)baseService);
             }
 
             return (T)baseService;

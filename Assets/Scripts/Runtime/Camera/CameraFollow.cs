@@ -14,6 +14,11 @@ namespace EEA.Game
         private float _targetHeight;
         private Transform _cachedTransform;
 
+        private float _targetRotationY;
+        private float _currentRotationY;
+        private float _currentHeight;
+        private float _smoothedRotationY;
+        private float _smoothedHeight;
         public Transform Target
         {
             get => _target;
@@ -32,33 +37,39 @@ namespace EEA.Game
             if (_target == null)
                 return;
 
-            float y1 = _target.eulerAngles.y;
-            float b =  _target.position.y + references.height * references.zoom;
-            float y2 = transform.eulerAngles.y;
-            float y3 = transform.position.y;
-            float y4 = Mathf.LerpAngle(y2, y1, references.rotationDamping * Time.deltaTime);
-            float y5 = Mathf.Lerp(y3, b, references.heightDamping * Time.deltaTime);
+            // Extract target properties
+            _targetRotationY = _target.eulerAngles.y + 45;
+            float targetHeight = _target.position.y + references.height * references.zoom;
 
-            Quaternion quaternion = Quaternion.Euler(0.0f, y4, 0.0f);
+            // Extract current properties
+            _currentRotationY = transform.eulerAngles.y;
+            _currentHeight = transform.position.y;
 
-            _cachedTransform.position = _target.position;
-            _cachedTransform.position -= quaternion * Vector3.forward * references.distance * references.zoom;
-            _cachedTransform.position = new Vector3(transform.position.x, y5, transform.position.z);
+            // Smoothly interpolate rotation and height
+            _smoothedRotationY = Mathf.LerpAngle(_currentRotationY, _targetRotationY, references.rotationDamping * Time.deltaTime);
+            _smoothedHeight = Mathf.Lerp(_currentHeight, targetHeight, references.heightDamping * Time.deltaTime);
+
+            // Compute new camera position
+            Quaternion rotation = Quaternion.Euler(0f, _smoothedRotationY, 0f);
+            _cachedTransform.position = _target.position - rotation * Vector3.forward * references.distance * references.zoom;
+            _cachedTransform.position = new Vector3(_cachedTransform.position.x, _smoothedHeight, _cachedTransform.position.z);
+
+            // Look at the target
             _cachedTransform.LookAt(_target);
 
-            if (Mathf.Abs(_targetDistance - references.distance) > Mathf.Epsilon)
+            // Adjust distance if needed
+            if (!Mathf.Approximately(_targetDistance, references.distance))
             {
                 references.distance = Mathf.MoveTowards(references.distance, _targetDistance, Time.deltaTime * 30f);
             }
-            if (Mathf.Abs(_targetHeight - references.height) <= Mathf.Epsilon)
-            {
-                return;
-            }
 
-            references.height = Mathf.MoveTowards(references.height, _targetHeight, Time.deltaTime * 30f);
+            // Adjust height if needed
+            if (!Mathf.Approximately(_targetHeight, references.height))
+            {
+                references.height = Mathf.MoveTowards(references.height, _targetHeight, Time.deltaTime * 30f);
+            }
         }
 
-        public void SetZoom(float z) => references.zoom = z;
 
         public void SetHeight(float h) => _targetHeight = h;
 

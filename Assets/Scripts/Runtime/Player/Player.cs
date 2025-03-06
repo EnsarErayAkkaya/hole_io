@@ -26,13 +26,15 @@ namespace EEA.Game
             {
                 // offset calculated and axis converted to XZ from XY
                 Vector3 offset = positions[0] - positions[1];
-                offset.z = offset.y;
-                offset.y = 0;
+                Vector3 rotatedOffset = Quaternion.Euler(0, 0, -45) * offset; // rotate offset to match camera rotation
+
+                rotatedOffset.z = rotatedOffset.y;
+                rotatedOffset.y = 0;
 
                 // clamp offst to joystick radius
-                offset = Vector3.ClampMagnitude(offset, playerReferences.joystickRadius);
+                rotatedOffset = Vector3.ClampMagnitude(rotatedOffset, playerReferences.joystickRadius);
 
-                Vector3 percentedOffset = offset / playerReferences.joystickRadius;
+                Vector3 percentedOffset = rotatedOffset / playerReferences.joystickRadius;
 
                 //Debug.Log($"Offset: {offset}, percentedOffset: {percentedOffset}");
 

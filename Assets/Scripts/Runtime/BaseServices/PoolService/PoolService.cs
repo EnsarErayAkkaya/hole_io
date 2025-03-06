@@ -195,7 +195,7 @@ namespace EEA.BaseService
             }
             else
             {
-                //Debug.LogError("Attempting to despawn a null clone");
+                //Debug.LogWarning("Attempting to despawn a null clone");
             }
         }
     }
@@ -330,7 +330,7 @@ namespace EEA.BaseService
             }
             else
             {
-                Debug.LogError("Attempting to spawn null");
+                Debug.LogWarning("Attempting to spawn null");
             }
 
             return null;

@@ -57,26 +57,6 @@ namespace EEA.Game
                 if (entity.references == null)
                     entity.references = new();
 
-                // CREATE TRIGGER OBJECT
-                /*if (entity.references.fallingEntityTrigger == null)
-                {
-                    var triggerObject = new GameObject("FallingEntityTrigger");
-                    triggerObject.transform.parent = obj.transform;
-                    triggerObject.transform.localPosition = Vector3.zero;
-                    var triggerMeshCollider = triggerObject.AddComponent<MeshCollider>();
-
-                    triggerMeshCollider.convex = true;
-                    triggerMeshCollider.sharedMesh = filter.sharedMesh;
-                    triggerMeshCollider.isTrigger = true;
-                    triggerObject.SetActive(false);
-
-                    entity.references.fallingEntityTrigger = triggerObject;
-                }
-                if (entity.references.fallingEntityTrigger != null)
-                {
-                    DestroyImmediate(entity.references.fallingEntityTrigger);
-                }*/
-
                 // set editor references
                 entity.references.holeBottomTag = "HoleBottom";
                 entity.references.holeDestroyTag = "HoleDestroy";

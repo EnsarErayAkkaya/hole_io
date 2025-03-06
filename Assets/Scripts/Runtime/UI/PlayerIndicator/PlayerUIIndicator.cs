@@ -13,13 +13,10 @@ namespace EEA.Game
         private Camera _mainCamera;
         private PlayerBase _player;
 
-        private void OnEnable()
-        {
-            _mainCamera = Camera.main;
-        }
-
         public void Init(PlayerBase target)
         {
+            _mainCamera = Camera.main;
+
             _player = target;
 
             references.levelText.text = $"LVL {_player.Level}";

@@ -15,7 +15,7 @@ namespace EEA.Game
 
                 var instance = BaseServices.PoolService.Spawn(references.movablePrefabs[selectedPrefabIndex]);
 
-                var fromNode = BaseGameManager.WaypointManager.GetRandomWaypoint();
+                var fromNode = BaseGameManager.WaypointService.GetRandomWaypoint();
 
                 if (instance != null)
                 {
@@ -29,6 +29,8 @@ namespace EEA.Game
                     // start from a random point between from and to nodes
                     instance.transform.position = fromNode.transform.position +
                         ((toNode.transform.position - fromNode.transform.position) * Random.value);
+
+                    instance.Init();
 
                     instance.WaypointFollower.StartFollowing();
                 }

@@ -82,10 +82,10 @@ namespace EEA.Game
                 .SetEase(Ease.OutBack)
                 .OnComplete(() =>
                 {
-                    references.killFloatingText.rectTransform.DOShakePosition(0.3f)
+                    references.killFloatingText.rectTransform.DOShakePosition(0.4f)
                         .SetId(references.killFloatingText);
 
-                    references.killFloatingText.DOFade(0.0f, 0.4f)
+                    references.killFloatingText.DOFade(0.0f, 0.7f)
                         .From(1)
                         .SetId(references.killFloatingText)
                         .OnComplete(() =>

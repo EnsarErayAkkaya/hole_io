@@ -77,14 +77,16 @@ namespace EEA.Game
         public virtual void SetFalling(int layer)
         {
             ChangeLayer(layer);
+            WakeUpRigidbody();
         }
 
         public virtual void SetNotFalling(int layer)
         {
             ChangeLayer(layer);
+            WakeUpRigidbody();
         }
 
-        public virtual void ChangeLayer(int layer)
+        protected virtual void ChangeLayer(int layer)
         {
             gameObject.layer = layer;
         }
@@ -96,15 +98,6 @@ namespace EEA.Game
         {
             if (_rigidbody.IsSleeping())
                 _rigidbody.WakeUp();
-        }
-
-        /// <summary>
-        /// Sleeps rigidbody to not include in physic calculations 
-        /// </summary>
-        public void SleepRigidbody()
-        {
-            if (!_rigidbody.IsSleeping())
-                _rigidbody.Sleep();
         }
 
         public void SetMaterial(Material material)

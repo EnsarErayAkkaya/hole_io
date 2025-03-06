@@ -23,11 +23,11 @@ namespace EEA.Game
         protected PlayerService _playerService;
         protected FallingEntityService _fallingEntityService = new();
         protected TransparencyService _transparencyService;
-        protected WaypointManager _waypointManager;
+        protected WaypointService _waypointService;
 
         public static IFallingEntityService FallingEntityService => Instance._fallingEntityService;
         public static IPlayerService PlayerService => Instance._playerService;
-        public static IWaypointManager WaypointManager => Instance._waypointManager;
+        public static IWaypointService WaypointService => Instance._waypointService;
         #endregion SERVICES
 
         #region PUBLIC
@@ -69,7 +69,7 @@ namespace EEA.Game
 
             _playerService = new PlayerService(references.playerServiceSettings);
             _transparencyService = new TransparencyService(references.transparencyServiceSettings);
-            _waypointManager = new WaypointManager();
+            _waypointService = new WaypointService();
 
             InitializeGame();
         }

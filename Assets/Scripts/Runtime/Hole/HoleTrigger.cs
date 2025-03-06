@@ -19,7 +19,6 @@ namespace EEA.Game
                     return;
 
                 entity.SetFalling(references.fallingEntityLayer);
-                entity.WakeUpRigidbody();
             }
         }
 
@@ -31,7 +30,6 @@ namespace EEA.Game
                     return;
 
                 entity.SetFalling(references.fallingEntityLayer);
-                entity.WakeUpRigidbody();
             }
             else if (other.gameObject.CompareTag(references.HoleTag))
             {
@@ -55,7 +53,6 @@ namespace EEA.Game
                     return;
 
                 entity.SetNotFalling(references.entityLayer);
-                entity.WakeUpRigidbody();
             }
         }
 

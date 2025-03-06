@@ -71,7 +71,7 @@ namespace EEA.BaseService
         #region EVENTS
         public Action<PlayerBase> OnPlayerCreated { get; set; }
         public Action<PlayerBase> OnPlayerLevelUp { get; set; }
-        public Action<PlayerBase> OnPlayerDied{ get; set; }
+        public Action<PlayerBase> OnPlayerDied { get; set; }
         #endregion EVENTS
 
         public PlayerService(PlayerServiceSettings settings)
@@ -125,15 +125,26 @@ namespace EEA.BaseService
                 OnPlayerDied?.Invoke(victim);
 
                 UIManager.Instance.ShowKill(++killer.KillCount);
+#if UNITY_ANDROID
                 Vibration.VibrateAndroid(700);
+#endif
             }
             else if (victim is Player)
             {
                 _player = null;
                 BaseGameManager.Instance.CameraManager.SetCameraTarget(null);
+            }
 
-                Vibration.VibrateNope();
+            _playersDict.Remove(victim.PlayerId);
 
+            // if player dead
+            if (_player == null)
+            {
+                BaseGameManager.Instance.GameEnd();
+            }
+            // all bots dead, player won
+            else if (_playersDict.Count == 1)
+            {
                 BaseGameManager.Instance.GameEnd();
             }
         }
@@ -174,7 +185,7 @@ namespace EEA.BaseService
 
             // reset all colors after colors used
             _notUsedColors.RemoveAt(colorIndex);
-            if (_notUsedColors.Count <= 0)
+            if (_notUsedColors.Count < 1)
                 _notUsedColors.AddRange(_allColors);
 
             playerBase.Init();
@@ -188,8 +199,7 @@ namespace EEA.BaseService
         {
             foreach (var item in _playersDict)
             {
-                item.Value.ResetPlayer();
-                BaseServices.PoolService.Despawn(item.Value);
+                BaseServices.PoolService.Despawn(item.Value.gameObject);
             }
 
             _playersDict.Clear();
@@ -197,6 +207,13 @@ namespace EEA.BaseService
         }
         public void PlayerLeveledUp(PlayerBase playerBase)
         {
+            if (playerBase is Player)
+            {
+#if UNITY_ANDROID
+                Vibration.VibrateAndroid(1000);
+#endif
+            }
+
             OnPlayerLevelUp?.Invoke(playerBase);
         }
     }

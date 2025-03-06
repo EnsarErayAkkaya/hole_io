@@ -70,7 +70,7 @@ namespace EEA.Game
         {
             if (indicators.ContainsKey(playerBase))
             {
-                BaseServices.PoolService.Despawn(indicators[playerBase]);
+                BaseServices.PoolService.Despawn(indicators[playerBase].gameObject);
                 indicators[playerBase].OnClear();
                 indicators.Remove(playerBase);
             }

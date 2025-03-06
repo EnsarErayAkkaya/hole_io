@@ -63,11 +63,11 @@ namespace EEA.Game
                 _toNode = _fromNode.GetRandomNeighbour();
             }
 
-            if (WaypointManager.Instance.GetDistanceToProjection(_fromNode, _toNode, transform.position) < references.maxReattachDistance)
+            if (BaseGameManager.WaypointService.GetDistanceToProjection(_fromNode, _toNode, transform.position) < references.maxReattachDistance)
             {
                 _isFollowing = true;
 
-                transform.position = WaypointManager.Instance.GetProjectedPosition(_fromNode, _toNode, transform.position);
+                transform.position = BaseGameManager.WaypointService.GetProjectedPosition(_fromNode, _toNode, transform.position);
             }
         }
 

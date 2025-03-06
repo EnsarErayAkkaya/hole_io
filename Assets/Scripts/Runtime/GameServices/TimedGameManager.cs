@@ -76,12 +76,16 @@ namespace EEA.Game
                     // there is a bigger hole
                     // lose
                     UIManager.Instance.CreatePopup(UIManager.Instance.references.losePopup);
+                    Vibration.VibrateNope();
                 }
                 else
                 {
                     BaseServices.LevelService.LevelCompleted();
                     // win
                     UIManager.Instance.CreatePopup(UIManager.Instance.references.winPopup);
+#if UNITY_ANDROID
+                    Vibration.VibrateAndroid(1000);
+#endif
                 }
             }
             else
@@ -89,6 +93,7 @@ namespace EEA.Game
                 // player died
                 // lose
                 UIManager.Instance.CreatePopup(UIManager.Instance.references.losePopup);
+                Vibration.VibrateNope();
             }
 
             _playerService.ClearPlayers();

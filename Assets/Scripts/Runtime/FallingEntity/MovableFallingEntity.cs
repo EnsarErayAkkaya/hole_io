@@ -12,6 +12,11 @@ namespace EEA.Game
 
         public WaypointFollower WaypointFollower => _waypointFollower;
 
+        public void Init()
+        {
+            SetKinematic(true);
+        }
+
         // IMPORTANT NOTE: WHEN RIGIDBODY isKinematic CHANGED, OnExitTrigger TRIGGERS INSTANTLY
         // I ADDED A TIMER TO FIX THIS ISSUE
         // SEE MORE: https://issuetracker.unity3d.com/issues/physics-rigidbody-ontriggerexit-slash-enter-methods-are-called-when-toggle-is-kinematic-on-slash-off

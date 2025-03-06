@@ -85,6 +85,7 @@ namespace EEA.Game
             _xp = 0;
             _level = 1;
             _size = 1;
+            _killCount = 0;
 
             SetLevel(1);
 
@@ -125,7 +126,7 @@ namespace EEA.Game
 
             if (requiredXp == -1)
             {
-                UpdateXpSlider(1f, null);
+                UpdateXpSlider(1f, "MAX");
             }
             else if (_xp >= requiredXp && requiredXpNextLevel != -1)
             {
@@ -182,24 +183,9 @@ namespace EEA.Game
 
         public void Die()
         {
-            ResetPlayer();
+            _isDead = true;
 
             transform.DOScale(Vector3.zero, 0.3f);
-        }
-
-        private void OnDisable()
-        {
-            ResetPlayer();
-        }
-
-        public void ResetPlayer()
-        {
-            _isDead = true;
-            _xp = 0;
-            _id = null;
-            _playerName = null;
-            _level = 1;
-            _size = 1;
         }
 
         public void SetSpeed(float speed) => _speed = speed;
